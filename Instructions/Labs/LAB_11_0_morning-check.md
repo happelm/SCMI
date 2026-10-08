@@ -12,7 +12,7 @@ lab:
 **Goal:** Check the app deployments of Day 2 before you start with Module 11.
 
 1. Intune admin center → Apps → Windows: device install status of Mozilla Firefox ESR and Notepad++ for CL4.
-2. On CL4: AppWorkload.log in the IME log folder and the toolkit logs in C:\Windows\Logs\Software.
+2. On CL4: `AppWorkload.log` in the IME log folder and the toolkit logs in `C:\Windows\Logs\Software`.
 3. Which Notepad++ edition did the wrapper choose?
 
 ### Checkpoint

@@ -9,7 +9,7 @@ lab:
 
 **Estimated time:** 35 minutes
 
-**Goal:** Draft the migration plan for your own environment in SCMI_Migration_Plan_Template.xlsx.
+**Goal:** Draft the migration plan for your own environment in `SCMI_Migration_Plan_Template.xlsx`.
 
 1. Assessment: devices, applications and deployment types, GPOs, identities.
 2. Target state: join type per device population, authority per workload, what stays in ConfigMgr.

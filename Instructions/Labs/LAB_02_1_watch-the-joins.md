@@ -14,12 +14,12 @@ lab:
 1. Start with CL3 and CL4: complete OOBE with a work or school account – User1 on CL3, User2 on CL4.
 2. Cloud Sync provisioning logs: find CL1 and CL2 – they are listed only after their first join attempt.
 3. Sign in on CL1 (User1) and CL2 (User2). Both devices are already hybrid joined from Lab 0.1.
-4. Run dsregcmd /status on CL1 and CL3 and compare the Device State and SSO State sections.
+4. Run `dsregcmd /status` on CL1 and CL3 and compare the Device State and SSO State sections.
 
 ### Checkpoint
 
-- [ ] CL1/CL2: AzureAdJoined YES, DomainJoined YES
-- [ ] CL3/CL4: AzureAdJoined YES, DomainJoined NO
+- [ ] CL1/CL2: `AzureAdJoined` YES, `DomainJoined` YES
+- [ ] CL3/CL4: `AzureAdJoined` YES, `DomainJoined` NO
 - [ ] All four devices in Entra ID with the right join type
 - [ ] CL3/CL4 visible in Intune
 

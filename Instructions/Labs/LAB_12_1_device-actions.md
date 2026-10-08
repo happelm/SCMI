@@ -13,7 +13,7 @@ lab:
 
 1. CL4 in Intune: run the remediation SCMI-RemoteRegistry-Disabled from Lab 6.2 on demand and Collect diagnostics.
 2. Download the diagnostics zip and find the IME logs in it.
-3. CL2 in Intune: compare the available actions with CL4 and run the script Get Co-Management State (CL2 → CM Scripts → Run script, as in Lab 3.1). It is one of the ConfigMgr Run Scripts of the lab site and reads ConfigInfo under HKLM\SOFTWARE\Microsoft\DeviceManageabilityCSP\Provider\MS DM Server – the value from Lab 5.1. Expected for CL2: an empty result, because CL2 is not enrolled in Intune. The script runs through the ConfigMgr client, triggered from the Intune admin center.
+3. CL2 in Intune: compare the available actions with CL4 and run the script Get Co-Management State (CL2 → CM Scripts → Run script, as in Lab 3.1). It is one of the ConfigMgr Run Scripts of the lab site and reads `ConfigInfo` under `HKLM\SOFTWARE\Microsoft\DeviceManageabilityCSP\Provider\MS DM Server` – the value from Lab 5.1. Expected for CL2: an empty result, because CL2 is not enrolled in Intune. The script runs through the ConfigMgr client, triggered from the Intune admin center.
 
 ### Checkpoint
 

@@ -21,15 +21,15 @@ lab:
 
 | Question | Where to look |
 |---|---|
-| Join state, PRT | dsregcmd /status |
+| Join state, PRT | `dsregcmd /status` |
 | Hybrid join chain | Event Viewer → Microsoft → Windows → User Device Registration → Admin |
 | MDM enrollment and policy errors | Event Viewer → DeviceManagement-Enterprise-Diagnostics-Provider → Admin |
-| Co-management state | CoManagementHandler.log, ConfigInfo registry value |
-| Cloud-first client registration | ccmsetup.log, ClientIDManagerStartup.log, LocationServices.log |
-| Tenant attach upload and actions | CMGatewaySyncUploadWorker.log, CMGatewayNotificationWorker.log (site server) |
-| Win32 apps from Intune | IntuneManagementExtension.log, AppWorkload.log |
-| Platform scripts, remediations | AgentExecutor.log, HealthScripts.log |
-| PSADT packages | C:\Windows\Logs\Software |
-| ConfigMgr apps | AppDiscovery.log, AppEnforce.log |
-| ConfigMgr baselines | CIAgent.log, DcmWmiProvider.log |
-| Windows Update, Delivery Optimization | Get-WindowsUpdateLog, Get-DeliveryOptimizationStatus |
+| Co-management state | `CoManagementHandler.log`, `ConfigInfo` registry value |
+| Cloud-first client registration | `ccmsetup.log`, `ClientIDManagerStartup.log`, `LocationServices.log` |
+| Tenant attach upload and actions | `CMGatewaySyncUploadWorker.log`, `CMGatewayNotificationWorker.log` (site server) |
+| Win32 apps from Intune | `IntuneManagementExtension.log`, `AppWorkload.log` |
+| Platform scripts, remediations | `AgentExecutor.log`, `HealthScripts.log` |
+| PSADT packages | `C:\Windows\Logs\Software` |
+| ConfigMgr apps | `AppDiscovery.log`, `AppEnforce.log` |
+| ConfigMgr baselines | `CIAgent.log`, `DcmWmiProvider.log` |
+| Windows Update, Delivery Optimization | `Get-WindowsUpdateLog`, `Get-DeliveryOptimizationStatus` |

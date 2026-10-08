@@ -74,20 +74,20 @@ One isolated pod and one Microsoft 365 E3 or E5 tenant per participant – nothi
 
 | System | Role | State at the start |
 |---|---|---|
-| DC1 | AD DS and DNS, domain smart.etc | OU=Cloud is the sync scope (User1, User2, CL1, CL2) |
-| SCCM | Primary site ETC, ConfigMgr 2609, Enhanced HTTP | Grown content: apps, collections, baselines, policies, GPOs. Sources in C:\Software, share \SCCM\Software$ |
+| DC1 | AD DS and DNS, domain smart.etc | `OU=Cloud` is the sync scope (User1, User2, CL1, CL2) |
+| SCCM | Primary site ETC, ConfigMgr 2609, Enhanced HTTP | Grown content: apps, collections, baselines, policies, GPOs. Sources in `C:\Software`, share \SCCM\Software$ |
 | SRV1 | Windows Server 2025, domain joined, Sync Server | Operating system only |
-| CL1 | Windows 11 26H2, domain joined, ConfigMgr client | OU=Cloud\Workstations\Finance – your pilot device |
-| CL2 | Windows 11 26H2, domain joined, ConfigMgr client | OU=Cloud\Workstations\Sales – becomes cloud-only on Day 3 |
+| CL1 | Windows 11 26H2, domain joined, ConfigMgr client | `OU=Cloud\Workstations\Finance` – your pilot device |
+| CL2 | Windows 11 26H2, domain joined, ConfigMgr client | `OU=Cloud\Workstations\Sales` – becomes cloud-only on Day 3 |
 | CL3 / CL4 | Windows 11 26H2, no domain | In OOBE – you join them to Entra ID on Day 1 |
 | Tenant | Microsoft 365 E3 or E5 | Your tenant admin account from your lab hoster (GoDeploy etc.) |
 ### Accounts
 
 | Account | Where | Used for |
 |---|---|---|
-| SMART\Administrator | DC, SCCM | Domain and ConfigMgr administration |
-| User1 | Synced from OU=Cloud | Finance user, local administrator – CL1, CL3 |
-| User2 | Synced from OU=Cloud | Sales user, local administrator – CL2, CL4 |
+| SMART\Administrator | DC1, SCCM | Domain and ConfigMgr administration |
+| User1 | Synced from `OU=Cloud` | Finance user, local administrator – CL1, CL3 |
+| User2 | Synced from `OU=Cloud` | Sales user, local administrator – CL2, CL4 |
 | Tenant admin | Your tenant | Entra admin center, Intune admin center, Cloud Attach |
 
 Passwords are on the pod card from the trainer.
@@ -101,7 +101,7 @@ Passwords are on the pod card from the trainer.
 - **Run Scripts:** Get Uptime, Get Co-Management State, Clear CCM Cache
 ### Tools
 
-- CMTrace or OneTrace for all .log files – ConfigMgr client logs in C:\Windows\CCM\Logs, Intune Management Extension logs in C:\ProgramData\Microsoft\IntuneManagementExtension\Logs
+- CMTrace or OneTrace for all .log files – ConfigMgr client logs in `C:\Windows\CCM\Logs`, Intune Management Extension logs in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`
 - Intune admin center: intune.microsoft.com · Entra admin center: entra.microsoft.com
 - Your Labfiles are available at <https://tinyurl.com/vxyphyey>
 

@@ -17,7 +17,7 @@ lab:
 
 2. Map the three parts: the discovery script and the compliance rule together become the detection script (exit 0 = compliant, exit 1 = not compliant), the remediation script stays a remediation script. The evaluation schedule of the baseline (every 4 hours) becomes the schedule of the assignment.
 
-3. Prepare CL4 so that there is something to fix: in an elevated PowerShell run Set-Service RemoteRegistry -StartupType Manual.
+3. Prepare CL4 so that there is something to fix: in an elevated PowerShell run `Set-Service RemoteRegistry -StartupType Manual`.
 
 4. Intune admin center → Devices → Scripts and remediations → Remediations → Create: name SCMI-RemoteRegistry-Disabled, the two scripts below, run this script using the logged-on credentials = No, run script in 64-bit PowerShell = Yes.
 
@@ -40,7 +40,7 @@ lab:
 
 6. Do not wait for the schedule: Intune admin center → Devices → CL4 → Run remediation → SCMI-RemoteRegistry-Disabled.
 
-7. On CL4 check Get-Service RemoteRegistry | Select-Object Name, StartType, Status and follow HealthScripts.log in C:\ProgramData\Microsoft\IntuneManagementExtension\Logs.
+7. On CL4 check `Get-Service RemoteRegistry | Select-Object Name, StartType, Status` and follow `HealthScripts.log` in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`.
 
 8. Intune admin center → Remediations → SCMI-RemoteRegistry-Disabled → Device status: add the columns for the detection output before and after the remediation.
 
