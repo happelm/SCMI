@@ -4,6 +4,9 @@
     padding: 2px 10px; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; color: #0969da; cursor: pointer; }
   .copy-btn:hover { background: #f3f4f6; }
   .markdown-body blockquote { border-left-color: #0078d4; background: #eff6fc; color: #242424; padding: 8px 16px; }
+  .markdown-body ul.task-list, .markdown-body .task-list-item { list-style: none; }
+  .markdown-body ul.task-list { padding-left: 0.4em; }
+  .markdown-body .task-list-item input[type=checkbox] { margin: 0 0.5em 0 0; vertical-align: middle; transform: scale(1.15); cursor: pointer; }
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -19,6 +22,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     block.style.position = 'relative';
     block.appendChild(btn);
+  });
+
+  // Checkpoints: tickable, remembered per browser and page
+  var key = 'scmi-checks:' + location.pathname;
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  document.querySelectorAll('.task-list-item input[type=checkbox]').forEach(function (box, i) {
+    box.removeAttribute('disabled');
+    box.checked = !!saved[i];
+    box.addEventListener('change', function () {
+      saved[i] = box.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+    });
   });
 });
 </script>
