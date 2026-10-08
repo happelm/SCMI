@@ -1,0 +1,9 @@
+title: SCMI Lab Instructions
+description: Migrating from Configuration Manager to Microsoft Intune – lab instructions
+theme: jekyll-theme-primer
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+exclude:
+  - README.md
