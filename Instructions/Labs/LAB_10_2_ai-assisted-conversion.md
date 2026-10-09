@@ -81,7 +81,7 @@ lab:
 9. **Analyzer.** `Install-Module PSScriptAnalyzer -Scope CurrentUser`, then `Invoke-ScriptAnalyzer -Path .\Invoke-AppDeployToolkit.ps1 -Severity Warning, Error`.
 
 10. Fix what the two checks and your reading found – by hand or by giving the finding back to Copilot in the same chat. Write down one thing the model got wrong.<br>
-    If you need a working ps1, you can find it in the Course Labfiles Folder: the complete script (built for PSAppDeployToolkit 4.1.8) and `NotepadPP-Blocks.txt` with the parts to paste into your own template.
+    If you need a working ps1, you can find it in the [Labfiles folder](https://github.com/happelm/SCMI/tree/main/Labfiles): the complete script (built for PSAppDeployToolkit 4.1.8) and `NotepadPP-Blocks.txt` with the parts to paste into your own template.
 
 11. **Test on CL4.** Copy the folder NotepadPP to CL4 and run from an elevated prompt: `Invoke-AppDeployToolkit.exe -DeploymentType Install`. CL4 has no Department value: expect the Standard edition, no Edition value under `HKLM\SOFTWARE\SmartETC\NotepadPP`, and the decision in the toolkit log in `C:\Windows\Logs\Software`. Then test `-DeploymentType Uninstall`.
 
