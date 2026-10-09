@@ -68,6 +68,7 @@ Every lab in the SCMI workshop builds on the previous one – work through them 
 - **Steps** say what to do and where. Menu paths use → between levels.
 - **Checkpoint** items are the definition of done. If one fails, tell the trainer before you continue – later labs depend on it.
 - **Notes** explain what to expect and where it typically goes wrong.
+
 ### Your lab pod
 
 One isolated pod and one Microsoft 365 E3 or E5 tenant per participant – nothing is shared, co-management settings are site-wide.
@@ -81,6 +82,7 @@ One isolated pod and one Microsoft 365 E3 or E5 tenant per participant – nothi
 | CL2 | Windows 11 26H2, domain joined, ConfigMgr client | `OU=Cloud\Workstations\Sales` – becomes cloud-only on Day 3 |
 | CL3 / CL4 | Windows 11 26H2, no domain | In OOBE – you join them to Entra ID on Day 1 |
 | Tenant | Microsoft 365 E3 or E5 | Your tenant admin account from your lab hoster (GoDeploy etc.) |
+
 ### Accounts
 
 | Account | Where | Used for |
@@ -91,6 +93,7 @@ One isolated pod and one Microsoft 365 E3 or E5 tenant per participant – nothi
 | Tenant admin | Your tenant | Entra admin center, Intune admin center, Cloud Attach |
 
 Passwords are on the pod card from the trainer.
+
 ### Objects you will meet
 
 - **Collections:** All Workstations, Dept-Finance, Dept-Sales, Pilot-CoMgmt (CL1), Workstations - Production, MW-Workstations Sat 22-02, All Laptops, Finance Laptops, Has 7-Zip installed, Users-App-PuTTY
@@ -99,6 +102,7 @@ Passwords are on the pod card from the trainer.
 - **Compliance:** BL - Workstation Security, BL - Reporting Only
 - **GPOs:** GPO-01 to GPO-04
 - **Run Scripts:** Get Uptime, Get Co-Management State, Clear CCM Cache
+
 ### Tools
 
 - CMTrace or OneTrace for all .log files – ConfigMgr client logs in `C:\Windows\CCM\Logs`, Intune Management Extension logs in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`
