@@ -5,7 +5,7 @@ permalink: index.html
 
 # SCMI – Migrating from Configuration Manager to Microsoft Intune
 
-Lab instructions for the three-day SCMI transformation workshop. Use the copy button on every code block. A printable version is available as [PDF](PDF/SCMI_Lab_Guide.pdf).
+Lab instructions for the three-day SCMI transformation workshop. Use the copy button on every code block.
 
 ### Day 1 – Assess, bridge, connect
 

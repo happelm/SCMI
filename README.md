@@ -3,7 +3,6 @@
 Lab instructions for the three-day SCMI transformation workshop.
 
 - **Read online:** <https://happelm.github.io/SCMI/>
-- **PDF:** [SCMI_Lab_Guide.pdf](PDF/SCMI_Lab_Guide.pdf)
 
 ## Labs
 
