@@ -107,4 +107,4 @@ Passwords are on the pod card from the trainer.
 
 - CMTrace or OneTrace for all .log files – ConfigMgr client logs in `C:\Windows\CCM\Logs`, Intune Management Extension logs in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`
 - Intune admin center: intune.microsoft.com · Entra admin center: entra.microsoft.com
-- Your Labfiles are available at <https://tinyurl.com/vxyphyey>
+- Lab files: [Labfiles folder in this repository](https://github.com/happelm/SCMI/tree/main/Labfiles)
