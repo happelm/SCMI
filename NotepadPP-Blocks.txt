@@ -1,0 +1,126 @@
+SCMI Lab 10.2 - Notepad++ reference blocks
+==========================================
+
+Use these blocks when your own conversion does not work, or to compare it with
+your result. They are pasted into a fresh template created with
+
+    New-ADTTemplate -Destination C:\ADTSoftware -Name NotepadPP
+
+so they do not depend on the PSAppDeployToolkit version of the complete script
+in this folder (that one is built for 4.1.8).
+
+Function and parameter names were checked against PSAppDeployToolkit 4.1.8.
+Check them in your version with:  Get-Command <function> -Syntax
+
+
+BLOCK 1 - Variables
+-------------------
+Where: in the $adtSession = @{ ... } block at the top. Replace the existing lines.
+
+    AppVendor = 'Notepad++ Team'
+    AppName = 'Notepad++'
+    AppVersion = 'latest'   # set to the version of npp-installer-x64.exe
+    AppArch = 'x64'
+    AppProcessesToClose = @(@{ Name = 'notepad++'; Description = 'Notepad++' })
+
+
+BLOCK 2 - Helper functions
+--------------------------
+Where: directly above the line "function Install-ADTDeployment".
+
+# ConfigMgr had two deployment types and picked one with the global condition
+# "SmartETC Department". A Win32 app has one program, so the package decides at run time.
+
+function Get-NppEdition
+{
+    [CmdletBinding()]
+    param
+    (
+    )
+
+    # Returns $null when the key or the value does not exist.
+    $department = Get-ADTRegistryKey -LiteralPath 'HKLM:\SOFTWARE\SmartETC' -Name 'Department'
+
+    if ($department -eq 'Finance')
+    {
+        Write-ADTLogEntry -Message 'Department is [Finance]. Finance edition selected.'
+        return 'Finance'
+    }
+
+    Write-ADTLogEntry -Message "Department is [$department] (empty = value not set). Standard edition selected."
+    return 'Standard'
+}
+
+function Install-NppEdition
+{
+    [CmdletBinding()]
+    param
+    (
+    )
+
+    $edition = Get-NppEdition
+    $editionKey = 'HKLM:\SOFTWARE\SmartETC\NotepadPP'
+
+    # Both deployment types ran the same installer with /S.
+    Start-ADTProcess -FilePath "$($adtSession.DirFiles)\npp-installer-x64.exe" -ArgumentList '/S'
+
+    if ($edition -eq 'Finance')
+    {
+        # Legacy Install-Finance.ps1: department marker, also the detection value of the Finance deployment type.
+        Set-ADTRegistryKey -LiteralPath $editionKey -Name 'Edition' -Value 'Finance' -Type String
+    }
+    elseif (Get-ADTRegistryKey -LiteralPath $editionKey -Name 'Edition')
+    {
+        # Device changed from Finance to another department: remove the marker.
+        Remove-ADTRegistryKey -LiteralPath $editionKey -Name 'Edition'
+    }
+}
+
+
+BLOCK 3 - Install
+-----------------
+Where: in Install-ADTDeployment, under "## <Perform Installation tasks here>".
+
+    Install-NppEdition
+
+Also in Install-ADTDeployment: delete the block at the end of the function that
+starts with "## Display a message at the end of the install." (the
+Show-ADTInstallationPrompt call). A required deployment should not end with a
+message box.
+
+
+BLOCK 4 - Uninstall
+-------------------
+Where: in Uninstall-ADTDeployment, under "## <Perform Uninstallation tasks here>".
+
+    $uninstaller = "$envProgramFiles\Notepad++\uninstall.exe"
+    if (Test-Path -LiteralPath $uninstaller)
+    {
+        # The NSIS uninstaller hands over to a copy of itself, so wait for the child process.
+        Start-ADTProcess -FilePath $uninstaller -ArgumentList '/S' -WaitForChildProcesses
+    }
+
+Where: in Uninstall-ADTDeployment, under "## <Perform Post-Uninstallation tasks here>".
+
+    if (Get-ADTRegistryKey -LiteralPath 'HKLM:\SOFTWARE\SmartETC\NotepadPP' -Name 'Edition')
+    {
+        Remove-ADTRegistryKey -LiteralPath 'HKLM:\SOFTWARE\SmartETC\NotepadPP' -Name 'Edition'
+    }
+
+
+BLOCK 5 - Repair
+----------------
+Where: in Repair-ADTDeployment, under "## <Perform Repair tasks here>".
+
+    # Repair evaluates the department again and reinstalls the matching edition.
+    Install-NppEdition
+
+
+Intune Win32 app
+----------------
+Install command    Invoke-AppDeployToolkit.exe -DeploymentType Install
+Uninstall command  Invoke-AppDeployToolkit.exe -DeploymentType Uninstall
+Install behavior   System
+Return codes       add 1602 = Retry
+Detection          File  %ProgramFiles%\Notepad++\notepad++.exe  exists,
+                   associated with a 32-bit app on 64-bit clients = No
