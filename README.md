@@ -60,6 +60,10 @@ By the end of Day 3 Windows updates for CL1 come from Intune, CL2 is cloud-only,
 
 [Deliberate dirt, log map](Instructions/Appendix.md)
 
+### Resources
+
+[SCMI link collection](https://github.com/happelm/Intune-Resources/blob/main/SCMILinks.md) – Learn articles, blogs and tools for every module, checked daily for broken links.
+
 ## About this guide
 
 Every lab in the SCMI workshop builds on the previous one – work through them in order and do not reset your pod between days. Each lab lists its goal, the steps at task level (not every click) and a checkpoint you confirm before moving on.

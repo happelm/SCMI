@@ -58,10 +58,11 @@
         {% endfor %}
       </ul>
       {% endfor %}
-      {% if appendix %}
       <h4>Reference</h4>
-      <ul><li><a href="{{ appendix.url | relative_url }}"{% if appendix.url == page.url %} class="active"{% endif %}>Appendix</a></li></ul>
-      {% endif %}
+      <ul>
+        {% if appendix %}<li><a href="{{ appendix.url | relative_url }}"{% if appendix.url == page.url %} class="active"{% endif %}>Appendix</a></li>{% endif %}
+        <li><a href="https://github.com/happelm/Intune-Resources/blob/main/SCMILinks.md" target="_blank" rel="noopener">Resources ↗</a></li>
+      </ul>
     </nav>
 
     <main class="content markdown-body">
