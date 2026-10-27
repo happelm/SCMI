@@ -90,8 +90,7 @@ Use `-SkipComputerMove` to leave CL1/CL2 directly in `OU=Cloud`.
 
 ## Known uncertainties
 
-The ConfigMgr script has not yet been run against a 2609 site. Steps tagged `[VERIFY]` use cmdlets
-whose parameter sets have changed between releases in the past (global conditions, client
+Steps tagged `[VERIFY]` use cmdlets whose parameter sets have changed between releases in the past (global conditions, client
 settings, discovery, Endpoint Protection, task sequence steps, script CIs). A failed step is logged
 in the CSV and does not abort the run – fix and rerun.
 
