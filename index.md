@@ -59,7 +59,7 @@ By the end of Day 3 Windows updates for CL1 come from Intune, CL2 is cloud-only,
 
 ### Appendix
 
-[Deliberate dirt, log map](Instructions/Appendix.html)
+[Fast track for Intune, deliberate dirt, log map](Instructions/Appendix.html)
 
 ### Resources
 
