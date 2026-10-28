@@ -28,7 +28,7 @@ lab:
 8. Intune admin center → Apps → Windows → Add → Line-of-business app: upload `ccmsetup.msi`, command-line arguments:
 
     ```text
-CCMSETUPCMD="/NoCRLCheck /mp:https://SCCM.smart.etc SMSSITECODE=ETC SMSMP=https://SCCM.smart.etc AADTENANTID=<tenant ID> AADCLIENTAPPID=<client app ID> AADRESOURCEURI=<server app ID URI>"
+    CCMSETUPCMD="/NoCRLCheck /mp:https://SCCM.smart.etc SMSSITECODE=ETC SMSMP=https://SCCM.smart.etc AADTENANTID=<tenant ID> AADCLIENTAPPID=<client app ID> AADRESOURCEURI=<server app ID URI>"
     ```
 
 9. Assign the app as required to SCMI-ConfigMgr-Client.
