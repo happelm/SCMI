@@ -3,12 +3,15 @@
 Lab instructions for the three-day SCMI transformation workshop.
 
 - **Read online:** <https://happelm.github.io/SCMI/>
+- **Day notes:** a summary of each course day with sources – [jump to the list](#day-notes)
 
 ## Labs
 
 ### Day 1 – Assess, bridge, connect
 
 By the end of Day 1 your users are synced, CL1/CL2 are hybrid joined, CL3/CL4 are Entra joined, the site is attached to your tenant, CL1 is co-managed and CL3 runs a ConfigMgr client installed from Intune.
+
+**Day notes:** [Day 1 – Assess, bridge, connect](Instructions/Notes/DAY_01_notes.md)
 
 | Lab | Title | Time |
 |---|---|---|
@@ -55,6 +58,14 @@ By the end of Day 3 Windows updates for CL1 come from Intune, CL2 is cloud-only,
 | 13.1 | [Clean sweep](Instructions/Labs/LAB_13_1_clean-sweep.md) | 30 min |
 | 14.1 | [Break and fix](Instructions/Labs/LAB_14_1_break-and-fix.md) | 25 min |
 | 15.1 | [Your migration plan](Instructions/Labs/LAB_15_1_your-migration-plan.md) | 35 min |
+
+### Day notes
+
+Summary of each day with sources, for after the course.
+
+| Day | Notes |
+|---|---|
+| 1 | [Assess, bridge, connect](Instructions/Notes/DAY_01_notes.md) |
 
 ### Appendix
 
