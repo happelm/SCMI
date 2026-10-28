@@ -11,7 +11,7 @@ lab:
 
 **Goal:** Upload your devices to the Intune admin center and run a first action from the cloud.
 
-1. ConfigMgr console → Administration → Cloud Services → Cloud Attach → Configure Cloud Attach. Sign in with your tenant admin.
+1. ConfigMgr console → Administration → Cloud Services → Cloud Attach → Configure Cloud Attach. Sign in with your tenant admin and select **Customize settings** – otherwise the Upload and Enablement pages don't appear.
 2. Upload: upload devices to the Intune admin center, collection All Workstations. On the same tab, clear "Enforce Configuration Manager RBAC for cloud console requests that interact with Configuration Manager".
 3. Enablement: automatic enrollment in Intune = None (for now).
 4. Finish the wizard and follow `CMGatewaySyncUploadWorker.log` on SCCM.

@@ -19,9 +19,9 @@ lab:
 
 4. Create a device group SCMI-ConfigMgr-Client with CL3.
 
-5. Export the site's "SMS Issuing" root certificate as a .cer file from the ConfigMgr console (Administration → Overview → Security → Certificates). It is not visible in `certlm.msc` on the site server.
+5. Export the site's "SMS Issuing" root certificate as a .cer file from the ConfigMgr console (Administration → Overview → Security → Certificates) – take the valid one with the longest validity, not an expired one. It is not visible in `certlm.msc` on the site server.
 
-6. Intune admin center → Devices → Configuration → Create → Windows 10 and later → Templates → Trusted certificate: upload the .cer file, destination store Computer certificate store – Root, assign to SCMI-ConfigMgr-Client.
+6. Intune admin center → Devices → Configuration → Create → Windows 10 and later → Templates → Trusted certificate: upload the .cer file, destination store Computer certificate store – Root, assign to SCMI-ConfigMgr-Client. The profile shows "Windows 8.1 and later" as platform – that's expected.
 
 7. On CL3: sync, then confirm in `certlm.msc` that SMS Issuing is listed under Trusted Root Certification Authorities. Do not continue before it is there.
 
@@ -30,6 +30,8 @@ lab:
     ```text
     CCMSETUPCMD="/NoCRLCheck /mp:https://SCCM.smart.etc SMSSITECODE=ETC SMSMP=https://SCCM.smart.etc AADTENANTID=<tenant ID> AADCLIENTAPPID=<client app ID> AADRESOURCEURI=<server app ID URI>"
     ```
+
+    Replace the placeholders completely, including the angle brackets. Don't refresh the browser while the file uploads – it cancels the upload without a warning.
 
 9. Assign the app as required to SCMI-ConfigMgr-Client.
 

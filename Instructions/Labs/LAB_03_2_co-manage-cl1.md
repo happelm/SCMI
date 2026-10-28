@@ -14,8 +14,8 @@ lab:
 1. Cloud Attach properties → Enablement: automatic enrollment = Pilot, pilot collection Pilot-CoMgmt.
 2. On CL1 as User1, check `dsregcmd /status`: `AzureAdPrt` must be YES (Lab 0.1). Open Edge once and confirm the single sign-on prompt. Then trigger Machine Policy Retrieval & Evaluation Cycle (Configuration Manager control panel → Actions).
 3. Follow `CoManagementHandler.log` on CL1 until the MDM enrollment completes.
-4. Cloud Attach properties → Staging: pilot collection Pilot-CoMgmt for all workloads.
-5. Workloads: move Compliance policies to Pilot Intune and select the Pilot-CoMgmt Collection under Staging.
+4. Cloud Attach properties → Workloads: move Compliance policies to **Pilot Intune**.
+5. Cloud Attach properties → Staging: select the pilot collection Pilot-CoMgmt for Compliance policies. The Staging option only appears once a workload is set to Pilot Intune.
 
 ### Checkpoint
 
@@ -27,3 +27,5 @@ lab:
 - [ ] Configuration Manager control panel → General → Co-management capabilities: CL1 = 8199 (8192 base + 4 Resource access + 2 Compliance policies + 1 co-management enabled), CL2 = 8197 (no Compliance bit: CL2 is not in Pilot-CoMgmt)
 
 > **Note:** If enrollment does not start, check the MDM user scope, the license of User1 and the hybrid join state of CL1 (PRT). A user who has never confirmed the single sign-on prompt (shown in the EU) causes an error in the user MDM sync – opening the browser once after the hybrid join resolves it. A user who was already signed in while the device joined has no PRT (`AzureAdPrt` NO) until the next sign-in.
+
+> **Note:** After the two CL1 records merge, the ConfigMgr pages of CL1 disappear from the Intune admin center for about 12 to 18 hours. They are back the next morning (Lab 4.2).
