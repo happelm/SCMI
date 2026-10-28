@@ -36,7 +36,7 @@ lab:
 
 4. **Make the Install phase repeatable.** Intune will run the install command again on a device where Firefox is already present. The Firefox MSI does not support a repair through Windows Installer, so the package installs over the existing version. In the Install phase add the switch `-SkipMSIAlreadyInstalledCheck` to the `Start-ADTMsiProcess` line from Lab 10.1 (code below). Without it the toolkit sees that the MSI is already installed and skips the installation without a message.
 
-    ```
+    ```powershell
     ## <Perform Installation tasks here>
     Start-ADTMsiProcess -Action Install -FilePath 'FirefoxESR.msi' -SkipMSIAlreadyInstalledCheck
     ```
@@ -64,7 +64,7 @@ lab:
     Write-Output 'Marker already removed'; exit 0
     ```
 
-    ```
+    ```powershell
     # Remediation script – removes the marker, clears the re-evaluation schedule, forces a full report, restarts the IME
     $marker = 'HKLM:\SOFTWARE\SmartETC\Apps\<AppName>'
     Remove-Item -Path $marker -Recurse -Force -ErrorAction SilentlyContinue
