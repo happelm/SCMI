@@ -17,7 +17,7 @@ lab:
 
 1. Open `C:\ADTSoftware\FirefoxESR\Invoke-AppDeployToolkit.ps1` from Lab 10.1. Note the value of `AppName` in the `$adtSession` block – it becomes the name of the marker key: `HKLM\SOFTWARE\SmartETC\Apps\<AppName>`, for example `...\Apps\Firefox ESR`.
 
-2. **Write the marker.** In `Install-ADTDeployment`, at the very end of the Post-Install phase (after the `Remove-ADTFile` line), add the first four lines of the code below. They create the key and write Version and InstallDate.
+2. **Write the marker.** In `Install-ADTDeployment`, at the very end of the Post-Install phase (after the `Remove-ADTFile` line), add the **first four lines** of the code below. They create the key and write Version and InstallDate.
 
     ```powershell
     # End of the Post-Install phase – company marker (same pattern in every package)
