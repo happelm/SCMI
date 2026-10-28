@@ -11,8 +11,27 @@ lab:
 
 **Goal:** Rebuild Greenshot and its runtime dependency as Win32 apps and deploy them to CL4.
 
-1. Download `IntuneWinAppUtil.exe` (GitHub: microsoft/Microsoft-Win32-Content-Prep-Tool).
-2. Package `C:\Software\VCRedist` (setup file `vc_redist.x64.exe`) and `C:\Software\Greenshot` (`greenshot-installer.exe`). Save the packages under `C:\Software\Intune`.
+Work on **SCCM** for steps 1 to 3 – the sources are in `C:\Software` there.
+
+1. Download `IntuneWinAppUtil.exe` from GitHub (microsoft/Microsoft-Win32-Content-Prep-Tool) to `C:\Software\Tools`. In PowerShell:
+
+    ```powershell
+    New-Item -Path C:\Software\Tools -ItemType Directory -Force | Out-Null
+    Invoke-WebRequest -Uri 'https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/raw/master/IntuneWinAppUtil.exe' -OutFile C:\Software\Tools\IntuneWinAppUtil.exe
+    ```
+
+2. Package both apps. `-c` is the source folder, `-s` the setup file in it, `-o` the output folder, `-q` runs without questions and creates the output folder. The result is one `.intunewin` file per app, named after the setup file – one output folder per app, as in Lab 10.1.
+
+    ```powershell
+    C:\Software\Tools\IntuneWinAppUtil.exe -c C:\Software\VCRedist -s vc_redist.x64.exe -o C:\Software\Intune\VCRedist -q
+    ```
+
+    ```powershell
+    C:\Software\Tools\IntuneWinAppUtil.exe -c C:\Software\Greenshot -s greenshot-installer.exe -o C:\Software\Intune\Greenshot -q
+    ```
+
+    Check the results: `C:\Software\Intune\VCRedist\vc_redist.x64.intunewin` and `C:\Software\Intune\Greenshot\greenshot-installer.intunewin`.
+
 3. **ConfigMgr console**: open the deployment types of Greenshot and Microsoft Visual C++ Redistributable x64 and note install command, uninstall command and detection method of each.
 4. **Intune admin center** → Apps → Windows → Add → Windows app (Win32): create **Greenshot** first. Install behavior System. Do not assign the app yet.
 
