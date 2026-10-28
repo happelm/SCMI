@@ -16,21 +16,21 @@ Work on **SCCM** for steps 1 to 3 – the sources are in `C:\Software` there.
 1. Download `IntuneWinAppUtil.exe` from GitHub (microsoft/Microsoft-Win32-Content-Prep-Tool) to `C:\Software\Tools`. In PowerShell:
 
     ```powershell
-    New-Item -Path C:\Software\Tools -ItemType Directory -Force | Out-Null
+    New-Item -Path C:\Software\Tools, C:\Software\Intune -ItemType Directory -Force | Out-Null
     Invoke-WebRequest -Uri 'https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/raw/master/IntuneWinAppUtil.exe' -OutFile C:\Software\Tools\IntuneWinAppUtil.exe
     ```
 
-2. Package both apps. `-c` is the source folder, `-s` the setup file in it, `-o` the output folder, `-q` runs without questions and creates the output folder. The result is one `.intunewin` file per app, named after the setup file – one output folder per app, as in Lab 10.1.
+2. Package both apps. `-c` is the source folder, `-s` the setup file in it, `-o` the output folder, Answer the question for a catalog folder with **N**. The result is one `.intunewin` file per app, named after the setup file.
 
     ```powershell
-    C:\Software\Tools\IntuneWinAppUtil.exe -c C:\Software\VCRedist -s vc_redist.x64.exe -o C:\Software\Intune\VCRedist -q
+    C:\Software\Tools\IntuneWinAppUtil.exe -c C:\Software\VCRedist -s vc_redist.x64.exe -o C:\Software\Intune
     ```
 
     ```powershell
-    C:\Software\Tools\IntuneWinAppUtil.exe -c C:\Software\Greenshot -s greenshot-installer.exe -o C:\Software\Intune\Greenshot -q
+    C:\Software\Tools\IntuneWinAppUtil.exe -c C:\Software\Greenshot -s greenshot-installer.exe -o C:\Software\Intune
     ```
 
-    Check the results: `C:\Software\Intune\VCRedist\vc_redist.x64.intunewin` and `C:\Software\Intune\Greenshot\greenshot-installer.intunewin`.
+    Check that `C:\Software\Intune` now contains `vc_redist.x64.intunewin` and `greenshot-installer.intunewin`.
 
 3. **ConfigMgr console**: open the deployment types of Greenshot and Microsoft Visual C++ Redistributable x64 and note install command, uninstall command and detection method of each.
 4. **Intune admin center** → Apps → Windows → Add → Windows app (Win32): create **Microsoft Visual C++ Redistributable x64** first – it is the dependency. Install behavior System. Do not assign it.
