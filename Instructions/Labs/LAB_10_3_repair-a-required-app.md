@@ -30,7 +30,7 @@ lab:
     Remove-Item -Path "HKLM:\SOFTWARE\SmartETC\Apps\$($adtSession.AppName)" -Recurse -Force -ErrorAction SilentlyContinue
     ```
 
-3. **Remove the marker.** In `Uninstall-ADTDeployment`, under "&lt;Perform Post-Uninstallation tasks here&gt;", add the `Remove-Item` line from the same block.
+3. **Remove the marker.** In `Uninstall-ADTDeployment`, under "&lt;Perform Post-Uninstallation tasks here&gt;", add the `Remove-Item` line from the same block above.
 
 4. **Make the Install phase repeatable.** Intune will run the install command again on a device where Firefox is already present. The Firefox MSI does not support a repair through Windows Installer, so the package installs over the existing version. In the Install phase add the switch `-SkipMSIAlreadyInstalledCheck` to the `Start-ADTMsiProcess` line from Lab 10.1 (code below). Without it the toolkit sees that the MSI is already installed and skips the installation without a message.
 
