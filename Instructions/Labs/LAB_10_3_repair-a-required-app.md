@@ -17,7 +17,7 @@ lab:
 
 1. Open `C:\ADTSoftware\FirefoxESR\Invoke-AppDeployToolkit.ps1` from Lab 10.1. Note the value of `AppName` in the `$adtSession` block – it becomes the name of the marker key: `HKLM\SOFTWARE\SmartETC\Apps\<AppName>`, for example `...\Apps\Firefox ESR`.
 
-2. **Write the marker.** In `Install-ADTDeployment`, at the very end of the Post-Install phase (after the `Remove-ADTFile` line), add the **first four lines** of the code below. They create the key and write Version and InstallDate.
+2. **Write the marker.** In `Install-ADTDeployment`, at the very end of the Post-Install phase (after the `Remove-ADTFile` line), add the code below. It creates the key and writes Version and InstallDate.
 
     ```powershell
     # End of the Post-Install phase – company marker (same pattern in every package)
@@ -25,12 +25,14 @@ lab:
     New-Item -Path $marker -Force | Out-Null
     Set-ItemProperty -Path $marker -Name 'Version' -Value $adtSession.AppVersion
     Set-ItemProperty -Path $marker -Name 'InstallDate' -Value (Get-Date -Format s)
+    ```
 
+3. **Remove the marker.** In `Uninstall-ADTDeployment`, under "&lt;Perform Post-Uninstallation tasks here&gt;", add the line below.
+
+    ```powershell
     # End of the Post-Uninstallation phase
     Remove-Item -Path "HKLM:\SOFTWARE\SmartETC\Apps\$($adtSession.AppName)" -Recurse -Force -ErrorAction SilentlyContinue
     ```
-
-3. **Remove the marker.** In `Uninstall-ADTDeployment`, under "&lt;Perform Post-Uninstallation tasks here&gt;", add the `Remove-Item` line from the same block above.
 
 4. **Make the Install phase repeatable.** Intune will run the install command again on a device where Firefox is already present. The Firefox MSI does not support a repair through Windows Installer, so the package installs over the existing version. In the Install phase add the switch `-SkipMSIAlreadyInstalledCheck` to the `Start-ADTMsiProcess` line from Lab 10.1 (code below). Without it the toolkit sees that the MSI is already installed and skips the installation without a message.
 
