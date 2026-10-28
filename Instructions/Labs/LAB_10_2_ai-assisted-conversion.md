@@ -52,12 +52,13 @@ lab:
      - Close processes via $adtSession.AppProcessesToClose.
      - No ServiceUI. No hard-coded user paths.
      - Keep every step of the legacy script or explain why not.
-     - Repair must evaluate the department again.
+     - Repair is run manually only (-DeploymentType Repair); Intune never calls it.
+       It must evaluate the department again.
      - Uninstall removes the Edition value.
     Output:
      1. Invoke-AppDeployToolkit.ps1 (complete)
      2. Intune detection rule and return codes
-     3. Test checklist: install, uninstall, repair, prompt
+     3. Test checklist: install, uninstall, repair (manual), prompt
     Attachment: NppInput.txt with four sections marked by ===== lines:
                 legacy script, ConfigMgr application XML, template, valid functions
     ```
