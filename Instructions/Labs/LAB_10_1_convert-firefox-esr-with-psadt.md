@@ -11,7 +11,15 @@ lab:
 
 **Goal:** Replace the legacy Firefox wrapper with a PSADT v4 package and deploy it via Intune.
 
-1. Open Powershell on server SCCM: `Install-Module PSAppDeployToolkit -Scope CurrentUser`, then `New-ADTTemplate -Destination C:\ADTSoftware -Name FirefoxESR`.
+1. Open PowerShell on server SCCM, install the toolkit module and create the package folder:
+
+    ```powershell
+    Install-Module PSAppDeployToolkit -Scope CurrentUser
+    ```
+
+    ```powershell
+    New-ADTTemplate -Destination C:\ADTSoftware -Name FirefoxESR
+    ```
 
 2. Copy `FirefoxESR.msi` to Files and `policies.json` to SupportFiles (source: `C:\Software\FirefoxESR`).
 
@@ -56,11 +64,31 @@ lab:
 
 9. Compare: which lines of the legacy script have no counterpart in your package, and which behavior is new?
 
-10. Test locally before Intune sees the package. Copy the folder FirefoxESR to CL4 and run from an elevated prompt: `Invoke-AppDeployToolkit.exe -DeploymentType Install`, then `-DeploymentType Uninstall`, then Install again. Read the toolkit log and the MSI log in `C:\Windows\Logs\Software` after each run.
+10. Test locally before Intune sees the package. Copy the folder FirefoxESR to CL4, open an elevated PowerShell in that folder and run install, uninstall, then install again. Read the toolkit log and the MSI log in `C:\Windows\Logs\Software` after each run.
+
+    ```powershell
+    .\Invoke-AppDeployToolkit.exe -DeploymentType Install
+    ```
+
+    ```powershell
+    .\Invoke-AppDeployToolkit.exe -DeploymentType Uninstall
+    ```
 
 11. Package with IntuneWinAppUtil: source folder `C:\ADTSoftware\FirefoxESR`, setup file `Invoke-AppDeployToolkit.exe`, output `C:\Software\Intune\FirefoxESR`.
 
-12. Create the Win32 app Mozilla Firefox ESR: install command `Invoke-AppDeployToolkit.exe -DeploymentType Install`, uninstall command `Invoke-AppDeployToolkit.exe -DeploymentType Uninstall`, install behavior System. Return codes: add 1602 as Retry (the user deferred). Detection as in ConfigMgr: file `policies.json` in `%ProgramFiles%\Mozilla Firefox\distribution` exists, associated with a 32-bit app on 64-bit clients = No.
+12. Create the Win32 app Mozilla Firefox ESR with the install and uninstall command below, install behavior System. Return codes: add 1602 as Retry (the user deferred). Detection as in ConfigMgr: file `policies.json` in `%ProgramFiles%\Mozilla Firefox\distribution` exists, associated with a 32-bit app on 64-bit clients = No.
+
+    Install command:
+
+    ```text
+    Invoke-AppDeployToolkit.exe -DeploymentType Install
+    ```
+
+    Uninstall command:
+
+    ```text
+    Invoke-AppDeployToolkit.exe -DeploymentType Uninstall
+    ```
 
 13. Make the deployment visible: on CL4 delete `%ProgramFiles%\Mozilla Firefox\distribution\policies.json` so that the app is no longer detected, and start Firefox. Then assign the app as required to SCMI-CL4-Group and sync CL4.
 

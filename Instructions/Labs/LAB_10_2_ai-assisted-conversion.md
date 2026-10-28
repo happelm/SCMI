@@ -13,7 +13,11 @@ lab:
 
 1. **Read the source.** ConfigMgr console → Applications → Notepad++ → Deployment Types. There are two: Notepad++ Finance (requirement: global condition SmartETC Department equals Finance, install `Install-Finance.ps1`, detection registry value `Edition = Finance` under `HKLM\SOFTWARE\SmartETC\NotepadPP`) and Notepad++ Standard (install `npp-installer-x64.exe /S`, script detection on `notepad++.exe`). ConfigMgr picks the first deployment type whose requirements are met. A Win32 app has no deployment types – the decision has to move into the package.
 
-2. Create the package folder: `New-ADTTemplate -Destination C:\ADTSoftware -Name NotepadPP`. Copy `npp-installer-x64.exe` to Files.
+2. Create the package folder with the command below. Copy `npp-installer-x64.exe` to Files.
+
+    ```powershell
+    New-ADTTemplate -Destination C:\ADTSoftware -Name NotepadPP
+    ```
 
 3. **Build one input file.** Copilot accepts only a few uploads per prompt, so everything the model needs goes into a single text file. On SCCM, in the ConfigMgr PowerShell session, run the code block below. It writes `C:\ADTSoftware\NppInput\NppInput.txt` with four marked sections: the legacy script, the application XML with both deployment types, the untouched template and the list of valid functions.
 
@@ -78,14 +82,42 @@ lab:
         Where-Object { $_ -like '*-ADT*' -and -not (Get-Command $_ -ErrorAction Ignore) }
     ```
 
-9. **Analyzer.** `Install-Module PSScriptAnalyzer -Scope CurrentUser`, then `Invoke-ScriptAnalyzer -Path .\Invoke-AppDeployToolkit.ps1 -Severity Warning, Error`.
+9. **Analyzer.** Install the module once, then run the analyzer in `C:\ADTSoftware\NotepadPP`:
+
+    ```powershell
+    Install-Module PSScriptAnalyzer -Scope CurrentUser
+    ```
+
+    ```powershell
+    Invoke-ScriptAnalyzer -Path .\Invoke-AppDeployToolkit.ps1 -Severity Warning, Error
+    ```
 
 10. Fix what the two checks and your reading found – by hand or by giving the finding back to Copilot in the same chat. Write down one thing the model got wrong.<br>
     If you need a working ps1, you can find it in the [Labfiles folder](https://github.com/happelm/SCMI/tree/main/Labfiles): the complete script (built for PSAppDeployToolkit 4.1.8) and `NotepadPP-Blocks.txt` with the parts to paste into your own template.
 
-11. **Test on CL4.** Copy the folder NotepadPP to CL4 and run from an elevated prompt: `Invoke-AppDeployToolkit.exe -DeploymentType Install`. CL4 has no Department value: expect the Standard edition, no Edition value under `HKLM\SOFTWARE\SmartETC\NotepadPP`, and the decision in the toolkit log in `C:\Windows\Logs\Software`. Then test `-DeploymentType Uninstall`.
+11. **Test on CL4.** Copy the folder NotepadPP to CL4, open an elevated PowerShell in that folder and run the install. CL4 has no Department value: expect the Standard edition, no Edition value under `HKLM\SOFTWARE\SmartETC\NotepadPP`, and the decision in the toolkit log in `C:\Windows\Logs\Software`. Then test the uninstall.
 
-12. **Package and deploy.** IntuneWinAppUtil: source folder `C:\ADTSoftware\NotepadPP`, setup file `Invoke-AppDeployToolkit.exe`, output `C:\Software\Intune\NotepadPP`. Win32 app Notepad++: install command `Invoke-AppDeployToolkit.exe -DeploymentType Install`, uninstall command `Invoke-AppDeployToolkit.exe -DeploymentType Uninstall`, install behavior System, return code 1602 as Retry.
+    ```powershell
+    .\Invoke-AppDeployToolkit.exe -DeploymentType Install
+    ```
+
+    ```powershell
+    .\Invoke-AppDeployToolkit.exe -DeploymentType Uninstall
+    ```
+
+12. **Package and deploy.** IntuneWinAppUtil: source folder `C:\ADTSoftware\NotepadPP`, setup file `Invoke-AppDeployToolkit.exe`, output `C:\Software\Intune\NotepadPP`. Win32 app Notepad++ with the install and uninstall command below, install behavior System, return code 1602 as Retry.
+
+    Install command:
+
+    ```text
+    Invoke-AppDeployToolkit.exe -DeploymentType Install
+    ```
+
+    Uninstall command:
+
+    ```text
+    Invoke-AppDeployToolkit.exe -DeploymentType Uninstall
+    ```
 
 13. Detection: one rule that is true for both editions – file `notepad++.exe` in `%ProgramFiles%\Notepad++` exists, associated with a 32-bit app on 64-bit clients = No. The registry rule of the Finance deployment type would report Standard devices as failed.
 
@@ -100,4 +132,8 @@ lab:
 - [ ] The log shows the department decision
 - [ ] You can name one thing the model got wrong
 
-> **Optional:** On CL4 create the string value `Department = Finance` under `HKLM\SOFTWARE\SmartETC` and run `Invoke-AppDeployToolkit.exe -DeploymentType Install` again from the elevated prompt. Check that the log names the Finance edition and that `Edition = Finance` exists under `HKLM\SOFTWARE\SmartETC\NotepadPP`.
+> **Optional:** On CL4 create the string value `Department = Finance` under `HKLM\SOFTWARE\SmartETC` and run the install again from the elevated PowerShell in the NotepadPP folder. Check that the log names the Finance edition and that `Edition = Finance` exists under `HKLM\SOFTWARE\SmartETC\NotepadPP`.
+>
+> ```powershell
+> .\Invoke-AppDeployToolkit.exe -DeploymentType Install
+> ```

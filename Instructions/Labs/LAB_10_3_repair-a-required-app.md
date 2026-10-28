@@ -41,7 +41,15 @@ lab:
     Start-ADTMsiProcess -Action Install -FilePath 'FirefoxESR.msi' -SkipMSIAlreadyInstalledCheck
     ```
 
-5. **Test locally.** Copy the folder to CL4 and run `Invoke-AppDeployToolkit.exe -DeploymentType Install` from an elevated prompt. Firefox is already installed, so the toolkit log in `C:\Windows\Logs\Software` must show that the MSI is installed again and not skipped. Check the marker: `Get-ItemProperty 'HKLM:\SOFTWARE\SmartETC\Apps\<AppName>'` shows Version and InstallDate.
+5. **Test locally.** Copy the folder to CL4, open an elevated PowerShell in that folder and run the install. Firefox is already installed, so the toolkit log in `C:\Windows\Logs\Software` must show that the MSI is installed again and not skipped. Then check the marker: it shows Version and InstallDate.
+
+    ```powershell
+    .\Invoke-AppDeployToolkit.exe -DeploymentType Install
+    ```
+
+    ```powershell
+    Get-ItemProperty 'HKLM:\SOFTWARE\SmartETC\Apps\<AppName>'
+    ```
 
 6. **Repackage.** IntuneWinAppUtil: source folder `C:\ADTSoftware\FirefoxESR`, setup file `Invoke-AppDeployToolkit.exe`, output `C:\Software\Intune\FirefoxESR`.
 
