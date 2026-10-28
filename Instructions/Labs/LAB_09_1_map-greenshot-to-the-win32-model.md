@@ -20,7 +20,7 @@ Work on **SCCM** for steps 1 to 3 – the sources are in `C:\Software` there.
     Invoke-WebRequest -Uri 'https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/raw/master/IntuneWinAppUtil.exe' -OutFile C:\Software\Tools\IntuneWinAppUtil.exe
     ```
 
-2. Package both apps. `-c` is the source folder, `-s` the setup file in it, `-o` the output folder, Answer the question for a catalog folder with **N**. The result is one `.intunewin` file per app, named after the setup file.
+2. Package both apps. `-c` is the source folder, `-s` the setup file in it, `-o` the output folder. Answer the question for a catalog folder with **N**. The result is one `.intunewin` file per app, named after the setup file.
 
     ```powershell
     C:\Software\Tools\IntuneWinAppUtil.exe -c C:\Software\VCRedist -s vc_redist.x64.exe -o C:\Software\Intune
