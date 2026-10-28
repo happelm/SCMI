@@ -11,7 +11,7 @@ lab:
 
 **Goal:** Replace the legacy Firefox wrapper with a PSADT v4 package and deploy it via Intune.
 
-1. On your packaging machine: `Install-Module PSAppDeployToolkit -Scope CurrentUser`, then `New-ADTTemplate -Destination C:\ADTSoftware -Name FirefoxESR`.
+1. Open Powershell on server SCCM: `Install-Module PSAppDeployToolkit -Scope CurrentUser`, then `New-ADTTemplate -Destination C:\ADTSoftware -Name FirefoxESR`.
 
 2. Copy `FirefoxESR.msi` to Files and `policies.json` to SupportFiles (source: `C:\Software\FirefoxESR`).
 
