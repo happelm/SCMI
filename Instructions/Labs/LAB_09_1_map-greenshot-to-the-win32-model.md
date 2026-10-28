@@ -33,7 +33,40 @@ Work on **SCCM** for steps 1 to 3 – the sources are in `C:\Software` there.
     Check the results: `C:\Software\Intune\VCRedist\vc_redist.x64.intunewin` and `C:\Software\Intune\Greenshot\greenshot-installer.intunewin`.
 
 3. **ConfigMgr console**: open the deployment types of Greenshot and Microsoft Visual C++ Redistributable x64 and note install command, uninstall command and detection method of each.
-4. **Intune admin center** → Apps → Windows → Add → Windows app (Win32): create **Greenshot** first. Install behavior System. Do not assign the app yet.
+4. **Intune admin center** → Apps → Windows → Add → Windows app (Win32): create **Microsoft Visual C++ Redistributable x64** first – it is the dependency. Install behavior System. Do not assign it.
+
+    Install command:
+
+    ```text
+    vc_redist.x64.exe /install /quiet /norestart
+    ```
+
+    Uninstall command:
+
+    ```text
+    vc_redist.x64.exe /uninstall /quiet /norestart
+    ```
+
+    Detection rule – the registry rule is written differently than in ConfigMgr. ConfigMgr stores the hive and the key separately (Local Machine + `SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64`). Intune wants one full key path.
+
+    Key path:
+
+    ```text
+    HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64
+    ```
+
+    | Setting | Value |
+    |---|---|
+    | Rule type | Registry |
+    | Value name | `Installed` |
+    | Detection method | Integer comparison |
+    | Operator | Equals |
+    | Value | 1 |
+    | Associated with a 32-bit app on 64-bit clients | No |
+
+    After Create the package uploads in the background – the portal shows the progress. Continue with Greenshot meanwhile.
+
+5. Create **Greenshot** as the second Win32 app. Install behavior System.
 
     Install command:
 
@@ -57,40 +90,9 @@ Work on **SCCM** for steps 1 to 3 – the sources are in `C:\Software` there.
     | Detection method | File or folder exists |
     | Associated with a 32-bit app on 64-bit clients | No |
 
-5. Create **Microsoft Visual C++ Redistributable x64** as the second Win32 app. Install behavior System. Do not assign it.
-
-    Install command:
-
-    ```text
-    vc_redist.x64.exe /install /quiet /norestart
-    ```
-
-    Uninstall command:
-
-    ```text
-    vc_redist.x64.exe /uninstall /quiet /norestart
-    ```
-
-6. Detection of the VC++ app – the registry rule is written differently than in ConfigMgr. ConfigMgr stores the hive and the key separately (Local Machine + `SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64`). Intune wants one full key path.
-
-    Key path:
-
-    ```text
-    HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64
-    ```
-
-    | Setting | Value |
-    |---|---|
-    | Rule type | Registry |
-    | Value name | `Installed` |
-    | Detection method | Integer comparison |
-    | Operator | Equals |
-    | Value | 1 |
-    | Associated with a 32-bit app on 64-bit clients | No |
-
-7. Only now connect the two: Greenshot → Properties → Dependencies → add Microsoft Visual C++ Redistributable x64 with Automatically install = Yes.
-8. Only then deploy: assign Greenshot as available to the existing device group SCMI-CL4-Group. The VC++ app gets no assignment of its own – it arrives through the dependency.
-9. Sync CL4, install Greenshot from the Company Portal and follow `AppWorkload.log` in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`: the dependency is detected and installed first, then Greenshot.
+6. Still in the Greenshot wizard, page **Dependencies**: add Microsoft Visual C++ Redistributable x64 with Automatically install = Yes. In ConfigMgr the dependency sits on the deployment type, in Intune on the app. If the VC++ app is not offered yet, finish the wizard and add the dependency later under Greenshot → Properties → Dependencies.
+7. Page **Assignments**: Available for enrolled devices → the existing device group SCMI-CL4-Group. The VC++ app gets no assignment of its own – it arrives through the dependency.
+8. Sync CL4, install Greenshot from the Company Portal and follow `AppWorkload.log` in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`: the dependency is detected and installed first, then Greenshot.
 
 ### Checkpoint
 
