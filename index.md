@@ -53,6 +53,8 @@ By the end of Day 2 GPO-01 runs as a settings catalog profile on CL1, the first 
 
 By the end of Day 3 Windows updates for CL1 come from Intune, CL2 is cloud-only, CL4 runs without ConfigMgr, every device has exactly one record – and you leave with a draft migration plan for your own environment.
 
+**Day notes:** [Day 3 – Deliver, clean up, operate](Instructions/Notes/DAY_03_notes.html)
+
 | Lab | Title | Time |
 |---|---|---|
 | 11.0 | [Morning check](Instructions/Labs/LAB_11_0_morning-check.html) | 10 min |
@@ -60,7 +62,7 @@ By the end of Day 3 Windows updates for CL1 come from Intune, CL2 is cloud-only,
 | 12.1 | [Device actions](Instructions/Labs/LAB_12_1_device-actions.html) | 10 min |
 | 12.2 | [CL2 becomes cloud-only](Instructions/Labs/LAB_12_2_cl2-becomes-cloud-only.html) | 25 min |
 | 13.1 | [Clean sweep](Instructions/Labs/LAB_13_1_clean-sweep.html) | 30 min |
-| 14.1 | [Break and fix](Instructions/Labs/LAB_14_1_break-and-fix.html) | 25 min |
+| 14.1 | [Break and fix](Instructions/Labs/LAB_14_1_break-and-fix.html) | 25 min (optional) |
 | 15.1 | [Your migration plan](Instructions/Labs/LAB_15_1_your-migration-plan.html) | 35 min |
 
 ### Day notes
@@ -71,6 +73,7 @@ Summary of each day with sources, for after the course.
 |---|---|
 | 1 | [Assess, bridge, connect](Instructions/Notes/DAY_01_notes.html) |
 | 2 | [Authority, policy, apps](Instructions/Notes/DAY_02_notes.html) |
+| 3 | [Deliver, clean up, operate](Instructions/Notes/DAY_03_notes.html) |
 
 ### Appendix
 
