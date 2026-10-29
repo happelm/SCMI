@@ -70,14 +70,18 @@ Work on **SCCM** for steps 2 to 12, in one PowerShell window: start **Windows Po
      - Repair must evaluate the department again.
      - Uninstall removes the Edition value.
     Output:
-     1. Invoke-AppDeployToolkit.ps1 (complete)
+     1. Invoke-AppDeployToolkit.ps1 as ONE complete file in ONE code block:
+        the whole template from the first to the last line, with your changes
+        built in. Not a diff, not only the changed parts, no "..." or
+        "rest unchanged" placeholders. If the answer gets too long, stop at
+        the end of a function and continue when I write "continue".
      2. Intune detection rule and return codes
      3. Test checklist: install, uninstall, repair, prompt
     Attachment: NppInput.txt with four sections marked by ===== lines:
                 legacy script, ConfigMgr application XML, template, valid functions
     ```
 
-6. Save the answer as `Invoke-AppDeployToolkit.ps1` in `C:\ADTSoftware\NotepadPP`. Save the prompt, the model name and the date as `Prompt.txt` next to it.
+6. **Complete script?** Check that the answer is the complete script: it starts like the template with `<#` and `.SYNOPSIS` and ends with the `catch` block and `Close-ADTSession -ExitCode 60001`. All functions are there: `Install-ADTDeployment`, `Uninstall-ADTDeployment` and `Repair-ADTDeployment`. If Copilot still returns only parts, answer in the same chat: `Return the complete Invoke-AppDeployToolkit.ps1 in one code block, including every unchanged line of the template.` Then copy the script into `C:\ADTSoftware\NotepadPP\Invoke-AppDeployToolkit.ps1` and overwrite the template. Save the prompt, the model name and the date as `Prompt.txt` next to it.
 
 7. **Read before you run.** Check by reading: `AppName` is set (otherwise Zero-Config MSI logic applies), the department is read from `HKLM\SOFTWARE\SmartETC\Department`, a missing value leads to Standard, the installer is started from Files with /S, only the Finance branch writes Edition, the uninstall phase calls `uninstall.exe /S` and removes the Edition value, and the decision is written to the log.
 
