@@ -71,18 +71,18 @@ lab:
 
 1. Note the current InstallDate in the marker key on CL4.
 
-2. Intune admin center → Devices → Scripts and remediations → Remediations → Create: name SCMI-Repair-Firefox. Download `Detect-FirefoxMarker.ps1` and `Remediate-FirefoxMarker.ps1` from the [Labfiles folder](https://github.com/happelm/SCMI/tree/main/Labfiles), open both in Notepad and replace `<AppName>` with the `AppName` of your package. Upload them as detection script and remediation script – the portal takes files, not pasted text. The scripts below show what they contain. Run this script using the logged-on credentials = No, enforce script signature check = No, run script in 64-bit PowerShell = Yes.
+2. Intune admin center → Devices → Scripts and remediations → Remediations → Create: name SCMI-Repair-Firefox. Download `Detect-FirefoxMarker.ps1` and `Remediate-FirefoxMarker.ps1` from the [Labfiles folder](https://github.com/happelm/SCMI/tree/main/Labfiles) and upload them as detection script and remediation script – the portal takes files, not pasted text. The scripts below show what they contain. Run this script using the logged-on credentials = No, enforce script signature check = No, run script in 64-bit PowerShell = Yes.
 
     ```powershell
     # Detection script – reports an issue as long as the marker exists
-    $marker = 'HKLM:\SOFTWARE\SmartETC\Apps\<AppName>'
+    $marker = 'HKLM:\SOFTWARE\SmartETC\Apps\Firefox ESR'
     if (Test-Path $marker) { Write-Output 'Marker present'; exit 1 }
     Write-Output 'Marker already removed'; exit 0
     ```
 
     ```powershell
     # Remediation script – removes the marker, clears the re-evaluation schedule, forces a full report, restarts the IME
-    $marker = 'HKLM:\SOFTWARE\SmartETC\Apps\<AppName>'
+    $marker = 'HKLM:\SOFTWARE\SmartETC\Apps\Firefox ESR'
     Remove-Item -Path $marker -Recurse -Force -ErrorAction SilentlyContinue
     # Clear the re-evaluation schedule so that the IME runs detection at the next check-in
     Remove-Item -Path 'HKLM:\SOFTWARE\Microsoft\IntuneManagementExtension\Win32Apps\*\GRS' -Recurse -Force -ErrorAction SilentlyContinue
@@ -110,4 +110,4 @@ lab:
 - [ ] The toolkit log shows that the MSI was installed again, not skipped
 - [ ] You can explain why the remediation must not be assigned to a group
 
-> **Note:** Replace `<AppName>` with the `AppName` of your package. Assigned to a group, the remediation would remove the marker on every schedule run. The remediation also deletes the GRS keys under `HKLM\SOFTWARE\Microsoft\IntuneManagementExtension\Win32Apps`. They hold the re-evaluation schedule of the Win32 apps; with the keys gone, the Intune Management Extension runs detection again at its next check-in instead of waiting for the schedule. The line clears the schedule for all apps, not only for Firefox: apps with a positive detection are left alone, failed apps are retried earlier than after 24 hours. The restart of the Intune Management Extension brings that check-in forward. Deleting `LastFullReportTimeUtc` under `...\Win32Apps\Reporting` makes the next status report a full one – without it the reinstallation happens on the device, but the Intune admin center shows it only much later. The restart is delayed on purpose: the remediation script itself runs inside the Intune Management Extension. Restarting the service at once would stop the script before its result is reported to Intune, so a separate process waits until the report is sent.
+> **Note:** The scripts use the marker key `Firefox ESR`. If the `AppName` in your package is different, change the path in both scripts before you upload them. Assigned to a group, the remediation would remove the marker on every schedule run. The remediation also deletes the GRS keys under `HKLM\SOFTWARE\Microsoft\IntuneManagementExtension\Win32Apps`. They hold the re-evaluation schedule of the Win32 apps; with the keys gone, the Intune Management Extension runs detection again at its next check-in instead of waiting for the schedule. The line clears the schedule for all apps, not only for Firefox: apps with a positive detection are left alone, failed apps are retried earlier than after 24 hours. The restart of the Intune Management Extension brings that check-in forward. Deleting `LastFullReportTimeUtc` under `...\Win32Apps\Reporting` makes the next status report a full one – without it the reinstallation happens on the device, but the Intune admin center shows it only much later. The restart is delayed on purpose: the remediation script itself runs inside the Intune Management Extension. Restarting the service at once would stop the script before its result is reported to Intune, so a separate process waits until the report is sent.

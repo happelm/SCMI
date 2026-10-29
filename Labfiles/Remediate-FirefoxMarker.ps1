@@ -1,5 +1,5 @@
 # Remediation script – removes the marker, clears the re-evaluation schedule, forces a full report, restarts the IME
-$marker = 'HKLM:\SOFTWARE\SmartETC\Apps\<AppName>'
+$marker = 'HKLM:\SOFTWARE\SmartETC\Apps\Firefox ESR'
 Remove-Item -Path $marker -Recurse -Force -ErrorAction SilentlyContinue
 # Clear the re-evaluation schedule so that the IME runs detection at the next check-in
 Remove-Item -Path 'HKLM:\SOFTWARE\Microsoft\IntuneManagementExtension\Win32Apps\*\GRS' -Recurse -Force -ErrorAction SilentlyContinue
