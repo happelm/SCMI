@@ -48,7 +48,7 @@ lab:
     ```
 
     ```powershell
-    Get-ItemProperty 'HKLM:\SOFTWARE\SmartETC\Apps\<AppName>'
+    Get-ItemProperty 'HKLM:\SOFTWARE\SmartETC\Apps\Firefox ESR'
     ```
 
 6. **Repackage.** On SCCM, package the changed folder again and rename the result, so that it cannot be mixed up with the package from Lab 10.1:
