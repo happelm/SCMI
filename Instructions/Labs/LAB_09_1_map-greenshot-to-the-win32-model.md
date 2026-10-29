@@ -15,20 +15,20 @@ Work on **SCCM** for steps 1 to 3 – the sources are in `C:\Software` there.
 
 1. Download `IntuneWinAppUtil.exe` from GitHub (microsoft/Microsoft-Win32-Content-Prep-Tool) to `C:\Software\Tools`. In PowerShell:
 
-    ```powershell
-    New-Item -Path C:\Software\Tools, C:\Software\Intune -ItemType Directory -Force | Out-Null
-    Invoke-WebRequest -Uri 'https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/raw/master/IntuneWinAppUtil.exe' -OutFile C:\Software\Tools\IntuneWinAppUtil.exe
-    ```
+   ```powershell
+   New-Item -Path C:\Software\Tools, C:\Software\Intune -ItemType Directory -Force | Out-Null
+   Invoke-WebRequest -Uri 'https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/raw/master/IntuneWinAppUtil.exe' -OutFile C:\Software\Tools\IntuneWinAppUtil.exe
+   ```
 
 2. Package both apps. `-c` is the source folder, `-s` the setup file in it, `-o` the output folder. The result is one `.intunewin` file per app, named after the setup file.
 
-    ```powershell
-    C:\Software\Tools\IntuneWinAppUtil.exe -c C:\Software\VCRedist -s vc_redist.x64.exe -o C:\Software\Intune
-    ```
+   ```powershell
+   C:\Software\Tools\IntuneWinAppUtil.exe -c C:\Software\VCRedist -s vc_redist.x64.exe -o C:\Software\Intune
+   ```
 
-    ```powershell
-    C:\Software\Tools\IntuneWinAppUtil.exe -c C:\Software\Greenshot -s greenshot-installer.exe -o C:\Software\Intune
-    ```
+   ```powershell
+   C:\Software\Tools\IntuneWinAppUtil.exe -c C:\Software\Greenshot -s greenshot-installer.exe -o C:\Software\Intune
+   ```
 
     Check that `C:\Software\Intune` now contains `vc_redist.x64.intunewin` and `greenshot-installer.intunewin`.
 
@@ -37,23 +37,23 @@ Work on **SCCM** for steps 1 to 3 – the sources are in `C:\Software` there.
 
     Install command:
 
-    ```text
-    vc_redist.x64.exe /install /quiet /norestart
-    ```
+   ```text
+   vc_redist.x64.exe /install /quiet /norestart
+   ```
 
     Uninstall command:
 
-    ```text
-    vc_redist.x64.exe /uninstall /quiet /norestart
-    ```
+   ```text
+   vc_redist.x64.exe /uninstall /quiet /norestart
+   ```
 
     Detection rule – the registry rule is written differently than in ConfigMgr. ConfigMgr stores the hive and the key separately (Local Machine + `SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64`). Intune wants one full key path, written as `HKEY_LOCAL_MACHINE\…` or `HKLM\…` – not in PowerShell notation `HKLM:\`.
 
     Key path:
 
-    ```text
-    HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64
-    ```
+   ```text
+   HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64
+   ```
 
     | Setting | Value |
     |---|---|
@@ -70,15 +70,15 @@ Work on **SCCM** for steps 1 to 3 – the sources are in `C:\Software` there.
 
     Install command:
 
-    ```text
-    greenshot-installer.exe /VERYSILENT /NORESTART /SUPPRESSMSGBOXES /ALLUSERS
-    ```
+   ```text
+   greenshot-installer.exe /VERYSILENT /NORESTART /SUPPRESSMSGBOXES /ALLUSERS
+   ```
 
     Uninstall command:
 
-    ```text
-    "%ProgramFiles%\Greenshot\unins000.exe" /VERYSILENT /NORESTART
-    ```
+   ```text
+   "%ProgramFiles%\Greenshot\unins000.exe" /VERYSILENT /NORESTART
+   ```
 
     Detection rule – manually configured:
 

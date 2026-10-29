@@ -19,28 +19,28 @@ lab:
 
 3. Prepare CL4 so that there is something to fix: in an elevated PowerShell run
 
-    ```powershell
-    Set-Service RemoteRegistry -StartupType Manual
-    ```
+   ```powershell
+   Set-Service RemoteRegistry -StartupType Manual
+   ```
 
 4. Before the first remediation in your tenant: Intune admin center → Tenant administration → Connectors and tokens → Windows data: set **I confirm that my tenant owns one of these licenses** to On and save. Until then, creating a remediation is greyed out.
 
 5. Intune admin center → Devices → Scripts and remediations → Remediations → Create: name SCMI-RemoteRegistry-Disabled. Upload `Detect-RemoteRegistryService.ps1` as detection script and `Remediate-RemoteRegistryService.ps1` as remediation script from the [Labfiles folder](https://github.com/happelm/SCMI/tree/main/Labfiles) – the portal takes files, not pasted text. The scripts below show what they contain. Run this script using the logged-on credentials = No, run script in 64-bit PowerShell = Yes.
 
-    ```powershell
-    # Detection script
-    $svc = Get-Service -Name RemoteRegistry -ErrorAction SilentlyContinue
-    if (-not $svc) { Write-Output 'Service not found'; exit 0 }
-    if ($svc.StartType -eq 'Disabled') { Write-Output 'Compliant: Disabled'; exit 0 }
-    Write-Output "Not compliant: $($svc.StartType)"; exit 1
-    ```
+   ```powershell
+   # Detection script
+   $svc = Get-Service -Name RemoteRegistry -ErrorAction SilentlyContinue
+   if (-not $svc) { Write-Output 'Service not found'; exit 0 }
+   if ($svc.StartType -eq 'Disabled') { Write-Output 'Compliant: Disabled'; exit 0 }
+   Write-Output "Not compliant: $($svc.StartType)"; exit 1
+   ```
 
-    ```powershell
-    # Remediation script
-    Stop-Service -Name RemoteRegistry -Force -ErrorAction SilentlyContinue
-    Set-Service -Name RemoteRegistry -StartupType Disabled
-    Write-Output 'RemoteRegistry disabled'; exit 0
-    ```
+   ```powershell
+   # Remediation script
+   Stop-Service -Name RemoteRegistry -Force -ErrorAction SilentlyContinue
+   Set-Service -Name RemoteRegistry -StartupType Disabled
+   Write-Output 'RemoteRegistry disabled'; exit 0
+   ```
 
 6. Assign it to a new device group SCMI-CL4-Group with CL4, schedule hourly.
 
@@ -48,9 +48,9 @@ lab:
 
 8. On CL4 check the service with the command below and follow `HealthScripts.log` in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`.
 
-    ```powershell
-    Get-Service RemoteRegistry | Select-Object Name, StartType, Status
-    ```
+   ```powershell
+   Get-Service RemoteRegistry | Select-Object Name, StartType, Status
+   ```
 
 9. Intune admin center → Remediations → SCMI-RemoteRegistry-Disabled → Device status: add the columns for the detection output before and after the remediation.
 

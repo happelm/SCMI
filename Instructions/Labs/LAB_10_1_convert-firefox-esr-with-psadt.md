@@ -13,13 +13,13 @@ lab:
 
 1. Open PowerShell on server SCCM, install the toolkit module and create the package folder:
 
-    ```powershell
-    Install-Module PSAppDeployToolkit -Scope CurrentUser
-    ```
+   ```powershell
+   Install-Module PSAppDeployToolkit -Scope CurrentUser
+   ```
 
-    ```powershell
-    New-ADTTemplate -Destination C:\ADTSoftware -Name FirefoxESR
-    ```
+   ```powershell
+   New-ADTTemplate -Destination C:\ADTSoftware -Name FirefoxESR
+   ```
 
 2. Copy `FirefoxESR.msi` to Files and `policies.json` to SupportFiles (source: `C:\Software\FirefoxESR`).
 
@@ -27,40 +27,40 @@ lab:
 
 4. **Variables.** In the `$adtSession` block at the top set `AppVendor`, `AppName`, `AppVersion` and `AppArch`, and put Firefox into `AppProcessesToClose` (code below). `AppName` must not stay empty: with an empty `AppName` and a single MSI in Files the toolkit switches to Zero-Config MSI and installs the MSI on its own.
 
-    ```powershell
-    # Variables – in the $adtSession block
-    AppVendor = 'Mozilla'
-    AppName = 'Firefox ESR'
-    AppVersion = '140'
-    AppArch = 'x64'
-    AppProcessesToClose = @(@{ Name = 'firefox'; Description = 'Mozilla Firefox' })
-    ```
+   ```powershell
+   # Variables – in the $adtSession block
+   AppVendor = 'Mozilla'
+   AppName = 'Firefox ESR'
+   AppVersion = '140'
+   AppArch = 'x64'
+   AppProcessesToClose = @(@{ Name = 'firefox'; Description = 'Mozilla Firefox' })
+   ```
 
 5. **Pre-Install** – nothing to write. The template already calls `Show-ADTInstallationWelcome` with `AppProcessesToClose`. That replaces `Stop-Process`: the user is asked to close Firefox and can defer.
 
 6. **Install** – under "&lt;Perform Installation tasks here&gt;" add the `Start-ADTMsiProcess` line (code below). The file name is enough, the toolkit looks in Files. Silent switches, MSI logging and the handling of exit code 3010 come from the toolkit.
 
-    ```powershell
-    # Install phase
-    Start-ADTMsiProcess -Action Install -FilePath 'FirefoxESR.msi'
-    ```
+   ```powershell
+   # Install phase
+   Start-ADTMsiProcess -Action Install -FilePath 'FirefoxESR.msi'
+   ```
 
 7. **Post-Install** – under "&lt;Perform Post-Installation tasks here&gt;" copy `policies.json` from SupportFiles and remove the desktop shortcut. Delete the `Show-ADTInstallationPrompt` block at the end of the function: a required deployment should not end with a message box.
 
-    ```powershell
-    # Post-Install phase
-    Copy-ADTFile -Path "$($adtSession.DirSupportFiles)\policies.json" -Destination "$envProgramFiles\Mozilla Firefox\distribution"
-    Remove-ADTFile -Path "$envCommonDesktop\Firefox.lnk"
-    ```
+   ```powershell
+   # Post-Install phase
+   Copy-ADTFile -Path "$($adtSession.DirSupportFiles)\policies.json" -Destination "$envProgramFiles\Mozilla Firefox\distribution"
+   Remove-ADTFile -Path "$envCommonDesktop\Firefox.lnk"
+   ```
 
 8. **Uninstall** – in `Uninstall-ADTDeployment`, under "&lt;Perform Uninstallation tasks here&gt;", call the Firefox uninstaller and remove the remaining folder (code below). Pre-Uninstall again needs nothing: the template closes Firefox with a 60 second countdown.
 
-    ```powershell
-    # Uninstall phase
-    $helper = "$envProgramFiles\Mozilla Firefox\uninstall\helper.exe"
-    if (Test-Path -LiteralPath $helper) { Start-ADTProcess -FilePath $helper -ArgumentList '/S' }
-    Remove-ADTFolder -Path "$envProgramFiles\Mozilla Firefox"
-    ```
+   ```powershell
+   # Uninstall phase
+   $helper = "$envProgramFiles\Mozilla Firefox\uninstall\helper.exe"
+   if (Test-Path -LiteralPath $helper) { Start-ADTProcess -FilePath $helper -ArgumentList '/S' }
+   Remove-ADTFolder -Path "$envProgramFiles\Mozilla Firefox"
+   ```
 
 9. Compare: which lines of the legacy script have no counterpart in your package, and which behavior is new?
 

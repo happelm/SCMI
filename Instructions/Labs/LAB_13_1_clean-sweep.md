@@ -15,9 +15,9 @@ lab:
 
 2. **Uninstall the client.** Intune admin center → Devices → Scripts and remediations → Platform scripts → Add → Windows: name SCMI-Uninstall-CMClient, upload a .ps1 file with the line below. Run this script using the logged-on credentials = No, enforce script signature check = No, run script in 64-bit PowerShell host = Yes. Assign it to SCMI-CL4-Group. A platform script runs once per device.
 
-    ```powershell
-    Start-Process -FilePath "$env:WINDIR\ccmsetup\ccmsetup.exe" -ArgumentList '/uninstall' -Wait
-    ```
+   ```powershell
+   Start-Process -FilePath "$env:WINDIR\ccmsetup\ccmsetup.exe" -ArgumentList '/uninstall' -Wait
+   ```
 
 3. Sync CL4 and restart the Intune Management Extension service. Follow `C:\Windows\ccmsetup\Logs\ccmsetup.log` until the uninstall has finished. `Get-Service CcmExec` must return an error, `C:\Windows\CCM` is gone.
 

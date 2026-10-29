@@ -23,9 +23,9 @@ lab:
     Enable the configuration.
 8. Create the service connection point (needs Enterprise Admin): on the DC, in an elevated PowerShell in the folder of the script, run the command below with your values. The script is on the Learn page "Configure device sync with Microsoft Entra Cloud Sync" <https://learn.microsoft.com/en-us/entra/identity/hybrid/cloud-sync/device-sync>. It is also in the [Labfiles folder](https://github.com/happelm/SCMI/tree/main/Labfiles). Unblock the script first (file properties → **Unblock**) and run `Set-ExecutionPolicy RemoteSigned`. The tenant ID is on Entra admin center → Overview.
 
-    ```powershell
-    .\ConfigureSCP.ps1 -Domain <your verified tenant domain> -TenantId <your tenant ID>
-    ```
+   ```powershell
+   .\ConfigureSCP.ps1 -Domain <your verified tenant domain> -TenantId <your tenant ID>
+   ```
 
 9. Assign an M365 E5 or EMS E5 license (depending on your tenant) to the new synced users. If no license is free, delete two or three demo users first – not your admin account, not User1 or User2.
 10. On CL1 and CL2, sign in and start the scheduled task Automatic-Device-Join (Task Scheduler → Microsoft → Windows → Workplace Join), or run the command below in an elevated PowerShell. The first run fails and writes the certificate (`userCertificate`) that the sync needs. Wait until CL1 and CL2 appear in the provisioning logs, then start the task a second time (or run `dsregcmd /join`). Then run `dsregcmd /status` on both devices and confirm the hybrid join. User1 and User2 were signed in before the join and have no PRT yet: sign out and in again, wait a minute and check that `AzureAdPrt` is YES.

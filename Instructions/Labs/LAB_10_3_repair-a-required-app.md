@@ -19,47 +19,47 @@ lab:
 
 2. **Write the marker.** In `Install-ADTDeployment`, at the very end of the Post-Install phase (after the `Remove-ADTFile` line), add the code below. It creates the key and writes Version and InstallDate.
 
-    ```powershell
-    # End of the Post-Install phase – company marker (same pattern in every package)
-    $marker = "HKLM:\SOFTWARE\SmartETC\Apps\$($adtSession.AppName)"
-    New-Item -Path $marker -Force | Out-Null
-    Set-ItemProperty -Path $marker -Name 'Version' -Value $adtSession.AppVersion
-    Set-ItemProperty -Path $marker -Name 'InstallDate' -Value (Get-Date -Format s)
-    ```
+   ```powershell
+   # End of the Post-Install phase – company marker (same pattern in every package)
+   $marker = "HKLM:\SOFTWARE\SmartETC\Apps\$($adtSession.AppName)"
+   New-Item -Path $marker -Force | Out-Null
+   Set-ItemProperty -Path $marker -Name 'Version' -Value $adtSession.AppVersion
+   Set-ItemProperty -Path $marker -Name 'InstallDate' -Value (Get-Date -Format s)
+   ```
 
 3. **Remove the marker.** In `Uninstall-ADTDeployment`, under "&lt;Perform Post-Uninstallation tasks here&gt;", add the line below.
 
-    ```powershell
-    # End of the Post-Uninstallation phase
-    Remove-Item -Path "HKLM:\SOFTWARE\SmartETC\Apps\$($adtSession.AppName)" -Recurse -Force -ErrorAction SilentlyContinue
-    ```
+   ```powershell
+   # End of the Post-Uninstallation phase
+   Remove-Item -Path "HKLM:\SOFTWARE\SmartETC\Apps\$($adtSession.AppName)" -Recurse -Force -ErrorAction SilentlyContinue
+   ```
 
 4. **Make the Install phase repeatable.** Intune will run the install command again on a device where Firefox is already present. The Firefox MSI does not support a repair through Windows Installer, so the package installs over the existing version. In the Install phase add the switch `-SkipMSIAlreadyInstalledCheck` to the `Start-ADTMsiProcess` line from Lab 10.1 (code below). Without it the toolkit sees that the MSI is already installed and skips the installation without a message.
 
-    ```powershell
-    ## <Perform Installation tasks here>
-    Start-ADTMsiProcess -Action Install -FilePath 'FirefoxESR.msi' -SkipMSIAlreadyInstalledCheck
-    ```
+   ```powershell
+   ## <Perform Installation tasks here>
+   Start-ADTMsiProcess -Action Install -FilePath 'FirefoxESR.msi' -SkipMSIAlreadyInstalledCheck
+   ```
 
 5. **Test locally.** Copy the folder to CL4, open an elevated PowerShell in that folder and run the install. Firefox is already installed, so the toolkit log in `C:\Windows\Logs\Software` must show that the MSI is installed again and not skipped. Then check the marker: it shows Version and InstallDate.
 
-    ```powershell
-    .\Invoke-AppDeployToolkit.exe -DeploymentType Install
-    ```
+   ```powershell
+   .\Invoke-AppDeployToolkit.exe -DeploymentType Install
+   ```
 
-    ```powershell
-    Get-ItemProperty 'HKLM:\SOFTWARE\SmartETC\Apps\Firefox ESR'
-    ```
+   ```powershell
+   Get-ItemProperty 'HKLM:\SOFTWARE\SmartETC\Apps\Firefox ESR'
+   ```
 
 6. **Repackage.** On SCCM, package the changed folder again and rename the result, so that it cannot be mixed up with the package from Lab 10.1:
 
-    ```powershell
-    C:\Software\Tools\IntuneWinAppUtil.exe -c C:\ADTSoftware\FirefoxESR -s Invoke-AppDeployToolkit.exe -o C:\Software\Intune\FirefoxESR
-    ```
+   ```powershell
+   C:\Software\Tools\IntuneWinAppUtil.exe -c C:\ADTSoftware\FirefoxESR -s Invoke-AppDeployToolkit.exe -o C:\Software\Intune\FirefoxESR
+   ```
 
-    ```powershell
-    Rename-Item C:\Software\Intune\FirefoxESR\Invoke-AppDeployToolkit.intunewin FirefoxESR-Repair.intunewin
-    ```
+   ```powershell
+   Rename-Item C:\Software\Intune\FirefoxESR\Invoke-AppDeployToolkit.intunewin FirefoxESR-Repair.intunewin
+   ```
 
 7. **Update the app.** Intune admin center → Apps → Windows → Mozilla Firefox ESR → Properties → App information → Edit → App package file: select `FirefoxESR-Repair.intunewin`. Commands and assignment stay as they are.
 
@@ -73,25 +73,25 @@ lab:
 
 2. Intune admin center → Devices → Scripts and remediations → Remediations → Create: name SCMI-Repair-Firefox. Download `Detect-FirefoxMarker.ps1` and `Remediate-FirefoxMarker.ps1` from the [Labfiles folder](https://github.com/happelm/SCMI/tree/main/Labfiles) and upload them as detection script and remediation script – the portal takes files, not pasted text. The scripts below show what they contain. Run this script using the logged-on credentials = No, enforce script signature check = No, run script in 64-bit PowerShell = Yes.
 
-    ```powershell
-    # Detection script – reports an issue as long as the marker exists
-    $marker = 'HKLM:\SOFTWARE\SmartETC\Apps\Firefox ESR'
-    if (Test-Path $marker) { Write-Output 'Marker present'; exit 1 }
-    Write-Output 'Marker already removed'; exit 0
-    ```
+   ```powershell
+   # Detection script – reports an issue as long as the marker exists
+   $marker = 'HKLM:\SOFTWARE\SmartETC\Apps\Firefox ESR'
+   if (Test-Path $marker) { Write-Output 'Marker present'; exit 1 }
+   Write-Output 'Marker already removed'; exit 0
+   ```
 
-    ```powershell
-    # Remediation script – removes the marker, clears the re-evaluation schedule, forces a full report, restarts the IME
-    $marker = 'HKLM:\SOFTWARE\SmartETC\Apps\Firefox ESR'
-    Remove-Item -Path $marker -Recurse -Force -ErrorAction SilentlyContinue
-    # Clear the re-evaluation schedule so that the IME runs detection at the next check-in
-    Remove-Item -Path 'HKLM:\SOFTWARE\Microsoft\IntuneManagementExtension\Win32Apps\*\GRS' -Recurse -Force -ErrorAction SilentlyContinue
-    # Force a full status report so that Intune receives the new state
-    Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\IntuneManagementExtension\Win32Apps\Reporting\*' -Name 'LastFullReportTimeUtc' -Force -ErrorAction SilentlyContinue
-    # Restart the IME after the result has been reported
-    Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-ExecutionPolicy Bypass -Command "Start-Sleep 180; Restart-Service IntuneManagementExtension -Force"'
-    Write-Output 'Marker removed, schedule cleared, full report forced, IME restart scheduled'; exit 0
-    ```
+   ```powershell
+   # Remediation script – removes the marker, clears the re-evaluation schedule, forces a full report, restarts the IME
+   $marker = 'HKLM:\SOFTWARE\SmartETC\Apps\Firefox ESR'
+   Remove-Item -Path $marker -Recurse -Force -ErrorAction SilentlyContinue
+   # Clear the re-evaluation schedule so that the IME runs detection at the next check-in
+   Remove-Item -Path 'HKLM:\SOFTWARE\Microsoft\IntuneManagementExtension\Win32Apps\*\GRS' -Recurse -Force -ErrorAction SilentlyContinue
+   # Force a full status report so that Intune receives the new state
+   Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\IntuneManagementExtension\Win32Apps\Reporting\*' -Name 'LastFullReportTimeUtc' -Force -ErrorAction SilentlyContinue
+   # Restart the IME after the result has been reported
+   Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-ExecutionPolicy Bypass -Command "Start-Sleep 180; Restart-Service IntuneManagementExtension -Force"'
+   Write-Output 'Marker removed, schedule cleared, full report forced, IME restart scheduled'; exit 0
+   ```
 
 3. On the Assignments page select **no group**. The remediation is only run on demand: assigned to a group it would remove the marker at every scheduled run and reinstall Firefox again and again.
 
