@@ -49,7 +49,7 @@ Work on **SCCM** for steps 2 to 12, in one PowerShell window: start **Windows Po
 
 4. Open `C:\ADTSoftware\NppInput\NppInput.txt` and check it before it leaves your machine: four sections, no credentials, no license keys, no customer names.
 
-5. **Prompt.** Open [Microsoft 365 Copilot Chat](https://m365.cloud.microsoft/chat){:target="_blank" rel="noopener"} with your tenant admin, upload `NppInput.txt` and paste the prompt below. Do not shorten the rules – each one closes a typical gap.
+5. **Prompt.** Open [Microsoft 365 Copilot Chat](https://m365.cloud.microsoft/chat){:target="_blank" rel="noopener"} with your tenant admin and switch the response mode from the default to the deep reasoning mode (**Think Deeper**). In the quick mode Copilot returns only the changed parts of the template instead of the complete script. Then upload `NppInput.txt` and paste the prompt below. Do not shorten the rules – each one closes a typical gap.
 
     ```text
     Role: packaging engineer, PSAppDeployToolkit v4.1+, Intune Win32 apps.
