@@ -71,7 +71,7 @@ lab:
 
 1. Note the current InstallDate in the marker key on CL4.
 
-2. Intune admin center → Devices → Scripts and remediations → Remediations → Create: name SCMI-Repair-Firefox. Paste the two scripts below and replace `<AppName>` in both with the `AppName` of your package. Run this script using the logged-on credentials = No, enforce script signature check = No, run script in 64-bit PowerShell = Yes.
+2. Intune admin center → Devices → Scripts and remediations → Remediations → Create: name SCMI-Repair-Firefox. Download `Detect-FirefoxMarker.ps1` and `Remediate-FirefoxMarker.ps1` from the [Labfiles folder](https://github.com/happelm/SCMI/tree/main/Labfiles), open both in Notepad and replace `<AppName>` with the `AppName` of your package. Upload them as detection script and remediation script – the portal takes files, not pasted text. The scripts below show what they contain. Run this script using the logged-on credentials = No, enforce script signature check = No, run script in 64-bit PowerShell = Yes.
 
     ```powershell
     # Detection script – reports an issue as long as the marker exists
