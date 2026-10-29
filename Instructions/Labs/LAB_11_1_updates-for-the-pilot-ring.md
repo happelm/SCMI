@@ -21,7 +21,7 @@ lab:
 
     | Setting | Value | Why |
     |---|---|---|
-    | DO Download Mode | Group (2) | Peers share content across subnets, but only within their group |
+    | DO Download Mode | HTTP blended with peering across a private group (2) | Peers share content across subnets, but only within their group |
     | DO Group Id Source | DNS Suffix (4) | The group is formed from the DNS suffix of the network connection |
     | DO Max Background Download Bandwidth (in KB/s) | 512 | Upper limit, 4096 Kbps |
     | DO Set Hours To Limit Background Download Bandwidth | Enabled | |
