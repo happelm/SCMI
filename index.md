@@ -44,11 +44,6 @@ By the end of Day 2 GPO-01 runs as a settings catalog profile on CL1, the first 
 | 10.2 | [AI-assisted conversion](Instructions/Labs/LAB_10_2_ai-assisted-conversion.html) | 30 min |
 | 10.3 | [Repair a required app](Instructions/Labs/LAB_10_3_repair-a-required-app.html) | 30 min (optional) |
 
-#### Before you leave
-
-- [ ] Firefox and Notepad++ deployments on CL4 installed
-- [ ] All VMs of your pod running
-
 ### Day 3 – Deliver, clean up, operate
 
 By the end of Day 3 Windows updates for CL1 come from Intune, CL2 is cloud-only, CL4 runs without ConfigMgr, every device has exactly one record – and you leave with a draft migration plan for your own environment.
