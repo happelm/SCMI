@@ -76,7 +76,7 @@ lab:
 
 11. Package with IntuneWinAppUtil: source folder `C:\ADTSoftware\FirefoxESR`, setup file `Invoke-AppDeployToolkit.exe`, output `C:\Software\Intune\FirefoxESR`.
 
-12. Create the Win32 app Mozilla Firefox ESR with the install and uninstall command below, install behavior System. Return codes: add 1602 as Retry (the user deferred). Detection as in ConfigMgr: file `policies.json` in `%ProgramFiles%\Mozilla Firefox\distribution` exists, associated with a 32-bit app on 64-bit clients = No.
+12. Create the Win32 app Mozilla Firefox ESR with the install and uninstall command below, install behavior System. Return codes: add 1602 as Retry (the user deferred). With Retry, Intune tries again three times, five minutes apart – a user who defers three times is out of deferrals after about 15 minutes. Without the mapping, the next attempt comes the next day. Detection as in ConfigMgr: file `policies.json` in `%ProgramFiles%\Mozilla Firefox\distribution` exists, associated with a 32-bit app on 64-bit clients = No.
 
     Install command:
 
