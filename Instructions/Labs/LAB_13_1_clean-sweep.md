@@ -19,7 +19,7 @@ lab:
    Start-Process -FilePath "$env:WINDIR\ccmsetup\ccmsetup.exe" -ArgumentList '/uninstall' -Wait
    ```
 
-3. Sync CL4 and restart the Intune Management Extension service. Follow `C:\Windows\ccmsetup\Logs\ccmsetup.log` until the uninstall has finished. `Get-Service CcmExec` must return an error, `C:\Windows\CCM` is gone.
+3. Sync CL4 and restart the Intune Management Extension service – platform scripts don't use push notifications, the IME restart brings the run forward. `AgentExecutor.log` in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs` shows the script run and its exit code 0. Follow `C:\Windows\ccmsetup\Logs\ccmsetup.log` until the uninstall has finished. `Get-Service CcmExec` must return an error, `C:\Windows\CCM` is gone.
 
 4. Intune admin center → Devices → CL4: the device is still managed by Intune. Note what the device page shows under management and ConfigMgr agent status.
 

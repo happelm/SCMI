@@ -7,7 +7,7 @@ lab:
 
 # Lab 14.1 – Break and fix
 
-**Estimated time:** 25 minutes
+**Estimated time:** 25 minutes · *optional*
 
 **Goal:** In pairs, one breaks and one diagnoses – using the five layers (identity, enrollment, authority, delivery, execution) and the log map only.
 

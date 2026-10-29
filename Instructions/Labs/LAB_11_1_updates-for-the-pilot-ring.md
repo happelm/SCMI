@@ -11,7 +11,7 @@ lab:
 
 **Goal:** Hand Windows updates for CL1 to Intune and replace the branch bandwidth rule with Delivery Optimization.
 
-1. Intune admin center → Devices → Windows updates → Update rings: create SCMI-Ring-Pilot (quality deferral 0, deadline 2 days, grace period 1 day), assign to SCMI-DEV-Ring-Pilot.
+1. Intune admin center → Devices → Windows updates → Update rings: create SCMI-Ring-Pilot (quality deferral 0, feature update deferral 0 – the feature update policy in step 2 decides the version, deadline 2 days, grace period 1 day), assign to SCMI-DEV-Ring-Pilot.
 2. Feature updates: create a policy SCMI-Anchor for Windows 11, version 26H2, same group.
 3. **Delivery Optimization instead of the BITS client setting.** In ConfigMgr, the client setting **CS - Branch Graz BITS** throttles BITS for the fictional branch Graz: 512 Kbps from 8:00 to 17:00, 4096 Kbps outside these hours. With the Windows Update workload on Intune, the updates no longer come through the ConfigMgr client and BITS, but through Delivery Optimization – the client setting no longer applies to them. Rebuild its intent in Delivery Optimization.
 
@@ -44,3 +44,5 @@ lab:
 - [ ] `CoManagementHandler.log`: Windows Update on Intune
 
 > **Note:** Feature update reports can take hours – do not wait for them.
+
+> **Note:** With deadlines set, the deadline counts from the time the device found the update in a scan; the grace period counts from the pending restart. The later of the two is the effective deadline. Before it, users can schedule the restart and Windows restarts outside active hours (Auto reboot before deadline = Yes). After it, the restart is forced regardless of active hours. A device that comes back after days switched off still gets the grace period, because it starts at the pending restart. Automatic update behavior only applies until the deadline.
