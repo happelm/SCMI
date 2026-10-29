@@ -47,7 +47,7 @@ Work on **SCCM** for steps 1 to 3 – the sources are in `C:\Software` there.
     vc_redist.x64.exe /uninstall /quiet /norestart
     ```
 
-    Detection rule – the registry rule is written differently than in ConfigMgr. ConfigMgr stores the hive and the key separately (Local Machine + `SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64`). Intune wants one full key path.
+    Detection rule – the registry rule is written differently than in ConfigMgr. ConfigMgr stores the hive and the key separately (Local Machine + `SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64`). Intune wants one full key path, written as `HKEY_LOCAL_MACHINE\…` or `HKLM\…` – not in PowerShell notation `HKLM:\`.
 
     Key path:
 

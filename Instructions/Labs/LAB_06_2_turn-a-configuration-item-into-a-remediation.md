@@ -23,7 +23,9 @@ lab:
     Set-Service RemoteRegistry -StartupType Manual
     ```
 
-4. Intune admin center → Devices → Scripts and remediations → Remediations → Create: name SCMI-RemoteRegistry-Disabled, the two scripts below, run this script using the logged-on credentials = No, run script in 64-bit PowerShell = Yes.
+4. Before the first remediation in your tenant: Intune admin center → Tenant administration → Connectors and tokens → Windows data: set **I confirm that my tenant owns one of these licenses** to On and save. Until then, creating a remediation is greyed out.
+
+5. Intune admin center → Devices → Scripts and remediations → Remediations → Create: name SCMI-RemoteRegistry-Disabled. Upload `Detect-RemoteRegistryService.ps1` as detection script and `Remediate-RemoteRegistryService.ps1` as remediation script from the [Labfiles folder](https://github.com/happelm/SCMI/tree/main/Labfiles) – the portal takes files, not pasted text. The scripts below show what they contain. Run this script using the logged-on credentials = No, run script in 64-bit PowerShell = Yes.
 
     ```powershell
     # Detection script
@@ -40,17 +42,17 @@ lab:
     Write-Output 'RemoteRegistry disabled'; exit 0
     ```
 
-5. Assign it to a new device group SCMI-CL4-Group with CL4, schedule hourly.
+6. Assign it to a new device group SCMI-CL4-Group with CL4, schedule hourly.
 
-6. Do not wait for the schedule: Intune admin center → Devices → CL4 → Run remediation → SCMI-RemoteRegistry-Disabled.
+7. Do not wait for the schedule: Intune admin center → Devices → CL4 → Run remediation → SCMI-RemoteRegistry-Disabled.
 
-7. On CL4 check the service with the command below and follow `HealthScripts.log` in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`.
+8. On CL4 check the service with the command below and follow `HealthScripts.log` in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`.
 
     ```powershell
     Get-Service RemoteRegistry | Select-Object Name, StartType, Status
     ```
 
-8. Intune admin center → Remediations → SCMI-RemoteRegistry-Disabled → Device status: add the columns for the detection output before and after the remediation.
+9. Intune admin center → Remediations → SCMI-RemoteRegistry-Disabled → Device status: add the columns for the detection output before and after the remediation.
 
 ### Checkpoint
 
