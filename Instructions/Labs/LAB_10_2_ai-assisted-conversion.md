@@ -28,7 +28,6 @@ Work on **SCCM** for steps 2 to 12, in one PowerShell window: start **Windows Po
 3. **Build one input file.** Copilot accepts only a few uploads per prompt, so everything the model needs goes into a single text file. Run the code block below in the same window. It loads the ConfigMgr module itself, reads the application from the site and changes back to drive C: afterwards. It writes `C:\ADTSoftware\NppInput\NppInput.txt` with four marked sections: the legacy script, the application XML with both deployment types, the untouched template and the list of valid functions.
 
     ```powershell
-    # Build one input file for the model – run in the PowerShell window on SCCM
     Import-Module "$env:SMS_ADMIN_UI_PATH\..\ConfigurationManager.psd1"
     if (-not (Get-Module PSAppDeployToolkit)) { Import-Module PSAppDeployToolkit }
     $site = (Get-PSDrive -PSProvider CMSite | Select-Object -First 1).Name
