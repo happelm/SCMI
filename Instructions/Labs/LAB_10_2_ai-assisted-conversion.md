@@ -30,7 +30,7 @@ Work on **SCCM** for steps 2 to 12, in one PowerShell window: start **Windows Po
     ```powershell
     # Build one input file for the model – run in the PowerShell window on SCCM
     Import-Module "$env:SMS_ADMIN_UI_PATH\..\ConfigurationManager.psd1"
-    Import-Module PSAppDeployToolkit
+    if (-not (Get-Module PSAppDeployToolkit)) { Import-Module PSAppDeployToolkit }
     $site = (Get-PSDrive -PSProvider CMSite | Select-Object -First 1).Name
     Push-Location "$($site):"
     $appXml = (Get-CMApplication -Name 'Notepad++').SDMPackageXML
@@ -89,7 +89,7 @@ Work on **SCCM** for steps 2 to 12, in one PowerShell window: start **Windows Po
 
     ```powershell
     # Function check – lists every ADT command the script uses that the module does not know
-    Import-Module PSAppDeployToolkit
+    if (-not (Get-Module PSAppDeployToolkit)) { Import-Module PSAppDeployToolkit }
     $ast = [System.Management.Automation.Language.Parser]::ParseFile(
             'C:\ADTSoftware\NotepadPP\Invoke-AppDeployToolkit.ps1', [ref]$null, [ref]$null)
     $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.CommandAst] }, $true) |
