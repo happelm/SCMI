@@ -29,6 +29,8 @@ By the end of Day 1 your users are synced, CL1/CL2 are hybrid joined, CL3/CL4 ar
 
 By the end of Day 2 GPO-01 runs as a settings catalog profile on CL1, the first conflict is resolved, and CL4 – on Intune for all workloads since Day 1 – gets Greenshot, Firefox ESR and Notepad++ from Intune.
 
+**Day notes:** [Day 2 – Authority, policy, apps](Instructions/Notes/DAY_02_notes.html)
+
 | Lab | Title | Time |
 |---|---|---|
 | 5.0 | [Morning check](Instructions/Labs/LAB_05_0_morning-check.html) | 10 min |
@@ -68,6 +70,7 @@ Summary of each day with sources, for after the course.
 | Day | Notes |
 |---|---|
 | 1 | [Assess, bridge, connect](Instructions/Notes/DAY_01_notes.html) |
+| 2 | [Authority, policy, apps](Instructions/Notes/DAY_02_notes.html) |
 
 ### Appendix
 
