@@ -63,7 +63,7 @@ lab:
 
 7. **Update the app.** Intune admin center → Apps → Windows → Mozilla Firefox ESR → Properties → App information → Edit → App package file: select `FirefoxESR-Repair.intunewin`. Commands and assignment stay as they are.
 
-8. **Change the detection.** Properties → Detection rules → Edit. Remove the `policies.json` rule and add two rules – both must be true: (1) rule type Registry, key path `HKEY_LOCAL_MACHINE\SOFTWARE\SmartETC\Apps\<AppName>`, value name Version, detection method Value exists, associated with a 32-bit app on 64-bit clients = No. (2) rule type File, path `%ProgramFiles%\Mozilla Firefox`, file `firefox.exe`, detection method File or folder exists, 32-bit = No.
+8. **Change the detection.** Properties → Detection rules → Edit. Remove the `policies.json` rule and add two rules – both must be true: (1) rule type Registry, key path `HKEY_LOCAL_MACHINE\SOFTWARE\SmartETC\Apps\Firefox ESR`, value name Version, detection method Value exists, associated with a 32-bit app on 64-bit clients = No. (2) rule type File, path `%ProgramFiles%\Mozilla Firefox`, file `firefox.exe`, detection method File or folder exists, 32-bit = No.
 
 9. Delete the marker key on CL4 once by hand and sync. Firefox is installed, but the marker is missing: with the new detection the app counts as not installed, Intune runs the install command again and the package writes the marker. This is exactly the lever Part B pulls remotely.
 
