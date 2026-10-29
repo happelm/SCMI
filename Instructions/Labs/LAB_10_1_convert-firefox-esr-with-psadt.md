@@ -74,10 +74,16 @@ lab:
     .\Invoke-AppDeployToolkit.exe -DeploymentType Uninstall
     ```
 
-11. On SCCM, package the folder with the IntuneWinAppUtil that you downloaded in Lab 9.1. Run the command below in PowerShell: the source folder is the whole package, the setup file is `Invoke-AppDeployToolkit.exe`, and the result `Invoke-AppDeployToolkit.intunewin` is written to `C:\Software\Intune\FirefoxESR`.
+11. On SCCM, package the folder with the IntuneWinAppUtil that you downloaded in Lab 9.1. Run the command below in PowerShell: the source folder is the whole package, the setup file is `Invoke-AppDeployToolkit.exe`, and the result is written to `C:\Software\Intune\FirefoxESR`.
 
     ```powershell
     C:\Software\Tools\IntuneWinAppUtil.exe -c C:\ADTSoftware\FirefoxESR -s Invoke-AppDeployToolkit.exe -o C:\Software\Intune\FirefoxESR
+    ```
+
+    IntuneWinAppUtil always names the file after the setup file, so every PSADT package would be called `Invoke-AppDeployToolkit.intunewin`. Rename it, so that you pick the right file in the upload dialog:
+
+    ```powershell
+    Rename-Item C:\Software\Intune\FirefoxESR\Invoke-AppDeployToolkit.intunewin FirefoxESR.intunewin
     ```
 
 12. Create the Win32 app Mozilla Firefox ESR with the install and uninstall command below, install behavior System. Return codes: add 1602 as Retry (the user deferred). With Retry, Intune tries again three times, five minutes apart – a user who defers three times is out of deferrals after about 15 minutes. Without the mapping, the next attempt comes the next day. Detection as in ConfigMgr: file `policies.json` in `%ProgramFiles%\Mozilla Firefox\distribution` exists, associated with a 32-bit app on 64-bit clients = No.

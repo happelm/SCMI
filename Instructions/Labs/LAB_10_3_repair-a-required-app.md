@@ -51,9 +51,17 @@ lab:
     Get-ItemProperty 'HKLM:\SOFTWARE\SmartETC\Apps\<AppName>'
     ```
 
-6. **Repackage.** IntuneWinAppUtil: source folder `C:\ADTSoftware\FirefoxESR`, setup file `Invoke-AppDeployToolkit.exe`, output `C:\Software\Intune\FirefoxESR`.
+6. **Repackage.** On SCCM, package the changed folder again and rename the result, so that it cannot be mixed up with the package from Lab 10.1:
 
-7. **Update the app.** Intune admin center → Apps → Windows → Mozilla Firefox ESR → Properties → App information → Edit → App package file: select the new .intunewin. Commands and assignment stay as they are.
+    ```powershell
+    C:\Software\Tools\IntuneWinAppUtil.exe -c C:\ADTSoftware\FirefoxESR -s Invoke-AppDeployToolkit.exe -o C:\Software\Intune\FirefoxESR
+    ```
+
+    ```powershell
+    Rename-Item C:\Software\Intune\FirefoxESR\Invoke-AppDeployToolkit.intunewin FirefoxESR-Repair.intunewin
+    ```
+
+7. **Update the app.** Intune admin center → Apps → Windows → Mozilla Firefox ESR → Properties → App information → Edit → App package file: select `FirefoxESR-Repair.intunewin`. Commands and assignment stay as they are.
 
 8. **Change the detection.** Properties → Detection rules → Edit. Remove the `policies.json` rule and add two rules – both must be true: (1) rule type Registry, key path `HKEY_LOCAL_MACHINE\SOFTWARE\SmartETC\Apps\<AppName>`, value name Version, detection method Value exists, associated with a 32-bit app on 64-bit clients = No. (2) rule type File, path `%ProgramFiles%\Mozilla Firefox`, file `firefox.exe`, detection method File or folder exists, 32-bit = No.
 

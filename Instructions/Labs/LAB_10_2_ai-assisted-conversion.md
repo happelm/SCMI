@@ -105,10 +105,16 @@ lab:
     .\Invoke-AppDeployToolkit.exe -DeploymentType Uninstall
     ```
 
-12. **Package and deploy.** On SCCM, package the folder with the IntuneWinAppUtil that you downloaded in Lab 9.1. Run the command below in PowerShell: the source folder is the whole package, the setup file is `Invoke-AppDeployToolkit.exe`, and the result `Invoke-AppDeployToolkit.intunewin` is written to `C:\Software\Intune\NotepadPP`.
+12. **Package and deploy.** On SCCM, package the folder with the IntuneWinAppUtil that you downloaded in Lab 9.1. Run the command below in PowerShell: the source folder is the whole package, the setup file is `Invoke-AppDeployToolkit.exe`, and the result is written to `C:\Software\Intune\NotepadPP`.
 
     ```powershell
     C:\Software\Tools\IntuneWinAppUtil.exe -c C:\ADTSoftware\NotepadPP -s Invoke-AppDeployToolkit.exe -o C:\Software\Intune\NotepadPP
+    ```
+
+    IntuneWinAppUtil always names the file after the setup file, so every PSADT package would be called `Invoke-AppDeployToolkit.intunewin`. Rename it, so that you pick the right file in the upload dialog:
+
+    ```powershell
+    Rename-Item C:\Software\Intune\NotepadPP\Invoke-AppDeployToolkit.intunewin NotepadPP.intunewin
     ```
 
     Then create the Win32 app Notepad++ with this file and the install and uninstall command below, install behavior System, return code 1602 as Retry.
