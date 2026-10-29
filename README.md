@@ -42,10 +42,6 @@ By the end of Day 2 GPO-01 runs as a settings catalog profile on CL1, the first 
 | 10.2 | [AI-assisted conversion](Instructions/Labs/LAB_10_2_ai-assisted-conversion.md) | 30 min |
 | 10.3 | [Repair a required app](Instructions/Labs/LAB_10_3_repair-a-required-app.md) | 30 min (optional) |
 
-#### Before you leave
-
-- [ ] Firefox and Notepad++ deployments on CL4 installed
-- [ ] All VMs of your pod running
 
 ### Day 3 – Deliver, clean up, operate
 
